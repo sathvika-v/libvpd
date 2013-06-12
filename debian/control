@@ -1,0 +1,13 @@
+Source: libvpd
+Section: unknown
+Priority: optional
+Maintainer: Eric Munson <ebmunson@us.ibm.com>
+Build-Depends: debhelper (>= 5), libdb4.3++-dev, zlib1g-dev, libc6-dev, libstdc++-dev, 
+Standards-Version: 3.7.2
+
+Package: lsvpd
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, udev
+Provides: libvpd
+Description: A C++ library for access to information collected by lsvpd, a
+	VPD/hardware inventory collection tool. 

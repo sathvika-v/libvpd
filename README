@@ -1,0 +1,36 @@
+libvpd 2.1.0  
+
+Installation (briefly, For more detailed instructions please see ./INSTALL) :
+	# ./bootstrap.sh
+	# ./configure [--prefix=/usr/]
+	# make
+	# make install
+
+Binary Dependencies
+	zlib
+
+Compilation Dependencies
+	Sqlite3 development package
+	  (Src: http://www.sqlite.org/)
+	ZLIB development package
+  	  (Src: http://www.zlib.net/zlib-1.2.3.tar.gz)
+
+For users of older RHEL and SLES versions:
+slqite is not available in the default repositories for some of the older
+RHEL and SLES versions.  If you want to run the new lsvpd/libvpd setup
+you need build sqlite version 3.0.0 or newer from source (available here:
+http://www.sqlite.org) or find an appropriate binary package for your
+architecture and software setup.
+
+
+BUILDING RPMS
+
+To build a tarball to feed to rpmbuild, do
+	# make dist
+
+It is necessary to specify that the target architecture is 32 bit when 
+building the rpm for this package.  
+
+As an example, we use a command similar to the following:
+
+> rpmbuild -ba --prefix=/usr --target=ppc --nodeps [PATH TO SPEC FILE]
