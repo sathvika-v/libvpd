@@ -24,6 +24,7 @@
 #include <libvpd-2/helper_functions.hpp>
 #include <cstdio>
 #include <fcntl.h>
+#include <unistd.h>
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
