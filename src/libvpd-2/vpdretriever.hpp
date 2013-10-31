@@ -42,6 +42,7 @@ namespace lsvpd
 		public:
 			static const string DEFAULT_DIR;
 			static const string DEFAULT_FILE;
+			static const string UDEV_NOTIFY_FILE;
 			
 			/**
 			 * Builds A VpdRetriever object that can be used for reading the

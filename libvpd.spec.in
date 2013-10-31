@@ -50,6 +50,8 @@ Contains header files for building with libvpd.
 %exclude %{_libdir}/*.la
 %{_libdir}/libvpd_cxx-@GENERIC_RELEASE@.so.*
 %{_libdir}/libvpd-@GENERIC_RELEASE@.so.*
+%{_sysconfdir}/udev/rules.d/90-vpdupdate.rules
+%{_var}/lib/lsvpd/run.vpdupdate
 
 %files devel
 %defattr(-,root,root,-)
@@ -61,6 +63,9 @@ Contains header files for building with libvpd.
 %{_libdir}/pkgconfig/libvpd_cxx-2.pc
 
 %changelog
+
+* Thu Oct 31 2013 Phani Yadav <phayadav@linux.vnet.ibm.com>
+- Automation of vpdupdate
 
 * Wed Feb 20 2013 Harsh P Bora <harsh@linux.vnet.ibm.com> 2.2.1-1
 - Added Vendor tag in RPM package.
