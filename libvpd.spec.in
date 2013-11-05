@@ -3,7 +3,7 @@
 
 Name:		%{name}
 Version:	%{version}
-Release:	1%{?dist}
+Release:	0%{?dist}
 Summary:	VPD Database access library for lsvpd
 
 Group:		System Environment/Libraries
@@ -63,6 +63,9 @@ Contains header files for building with libvpd.
 %{_libdir}/pkgconfig/libvpd_cxx-2.pc
 
 %changelog
+
+* Tue Nov 5 2013 Suzuk K Poulose <suzuki@in.ibm.com> 2.2.2-0
+- Release version 2.2.2
 
 * Thu Oct 31 2013 Phani Yadav <phayadav@linux.vnet.ibm.com>
 - Automation of vpdupdate
