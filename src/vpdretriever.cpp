@@ -88,7 +88,7 @@ namespace lsvpd
 				 * run vpdupdate.
 				 */
 				logger.log( "libvpd: Running vpdupdate to update the default db.", LOG_INFO );
-				system( "/sbin/vpdupdate >/dev/null 2>&1" );
+				system( "vpdupdate >/dev/null 2>&1" );
 			}
 		}
 		db = new VpdDbEnv( VpdRetriever::DEFAULT_DIR,
