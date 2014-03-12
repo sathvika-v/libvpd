@@ -64,7 +64,10 @@ Contains header files for building with libvpd.
 
 %changelog
 
-* Tue Nov 5 2013 Suzuk K Poulose <suzuki@in.ibm.com> 2.2.2-0
+* Wed Mar 13 2014 Suzuki K Poulose <suzuki@in.ibm.com> 2.2.3
+- Relese version 2.2.3
+
+* Tue Nov 5 2013 Suzuki K Poulose <suzuki@in.ibm.com> 2.2.2-0
 - Release version 2.2.2
 
 * Thu Oct 31 2013 Phani Yadav <phayadav@linux.vnet.ibm.com>

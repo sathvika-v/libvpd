@@ -1,3 +1,11 @@
+2.2.3
+
+Restrict vpdupdate triggers to device change events
+
+2.2.2
+
+Automate vpdupdate
+
 2.1.3
 
 Fix numbering of .so files, per bug #69369.

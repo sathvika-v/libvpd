@@ -1,5 +1,5 @@
 #base
-AC_INIT([libvpd],[2.2.2],[hegdevasant@in.ibm.com,suzuki@in.ibm.com])
+AC_INIT([libvpd],[2.2.3],[hegdevasant@in.ibm.com,suzuki@in.ibm.com])
 AC_CONFIG_HEADER(src/libvpd-2/config.h)
 AM_INIT_AUTOMAKE
 AC_SUBST(DATE, [`date`])
@@ -10,7 +10,7 @@ GENERIC_LIBRARY_NAME=libvpd
 #Release version
 GENERIC_MAJOR_VERSION=2
 GENERIC_MINOR_VERSION=2
-GENERIC_MICRO_VERSION=2
+GENERIC_MICRO_VERSION=3
 
 GENERIC_API_VERSION=$GENERIC_MAJOR_VERSION
 AC_SUBST(GENERIC_API_VERSION)
