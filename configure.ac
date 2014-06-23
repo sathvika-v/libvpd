@@ -3,6 +3,7 @@ AC_INIT([libvpd],[2.2.3],[hegdevasant@in.ibm.com,suzuki@in.ibm.com])
 AC_CONFIG_HEADER(src/libvpd-2/config.h)
 AM_INIT_AUTOMAKE
 AC_SUBST(DATE, [`date`])
+AC_CONFIG_MACRO_DIR([m4])
 
 #Generic variable setup
 GENERIC_LIBRARY_NAME=libvpd
