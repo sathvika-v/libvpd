@@ -52,7 +52,7 @@ AC_HEADER_STDBOOL
 AC_TYPE_SIZE_T
 AC_HEADER_DIRENT
 AC_HEADER_STDC
-AC_CHECK_HEADERS([fcntl.h stdlib.h string.h sys/ioctl.h sys/param.h syslog.h unistd.h ctype.h])
+AC_CHECK_HEADERS([fcntl.h stdlib.h string.h sys/ioctl.h sys/param.h syslog.h unistd.h ctype.h arpa/inet.h netinet/in.h])
 AC_CHECK_HEADERS([sqlite3.h],,[AC_MSG_ERROR([sqlite header files are required for building libvpd])])
 
 
