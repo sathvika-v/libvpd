@@ -56,7 +56,7 @@ AC_CHECK_HEADERS([sqlite3.h],,[AC_MSG_ERROR([sqlite header files are required fo
 
 
 #libraries
-AC_CHECK_LIB(sqlite3, sqlite3_libversion_number, [], [ 
+AC_CHECK_LIB(sqlite3, sqlite3_libversion_number, [], [
 			echo "sqlite3 library is required for lsvpd"
 			exit 1 ])
 AC_FUNC_CLOSEDIR_VOID
