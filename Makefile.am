@@ -24,7 +24,7 @@ lib_LTLIBRARIES = libvpd_cxx.la libvpd.la
 library_includedir=$(includedir)/libvpd-2/
 library_include_HEADERS = $(lib_hpp_files) $(lib_h_files)
 
-INCLUDES = -I./src/
+AM_CPPFLAGS = -I./src/
 
 libvpd_la_SOURCES = src/vpdretriever_c.c \
 		src/common.c \
