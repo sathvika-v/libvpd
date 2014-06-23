@@ -59,7 +59,7 @@ struct list* concat_list( struct list *head, const struct list *addme )
 	
 	while( head->next )
 		head = head->next;
-	head->next = addme;
+	head->next = (struct list *) addme;
 	
 	return ret;
 }

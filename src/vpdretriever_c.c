@@ -30,7 +30,6 @@ static int build_component_sub( struct vpdretriever *dbenv, struct component *ro
 {
 	struct list *child;
 	struct component *addme;
-	char *id;
 	
 	child = root->childrenIDs;
 	while( child )
@@ -58,7 +57,6 @@ static int build_system_sub( struct vpdretriever *dbenv, struct system *root )
 {
 	struct list *child;
 	struct component *addme;
-	char *id;
 	
 	child = root->childrenIDs;
 	while( child )

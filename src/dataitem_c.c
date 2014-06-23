@@ -106,5 +106,5 @@ void add_dataitem( struct dataitem *head, const struct dataitem *addme )
 	
 	while( head->next )
 		head = head->next;
-	head->next = addme;
+	head->next = (struct dataitem *) addme;
 }

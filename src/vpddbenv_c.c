@@ -133,7 +133,7 @@ struct system* fetch_system( struct vpddbenv *db )
 	
 	if( rc == SQLITE_ROW )
 	{
-		ret = unpack_system( sqlite3_column_blob( pstmt, 0 ) );
+		ret = unpack_system( (void *) sqlite3_column_blob( pstmt, 0 ) );
 	}
 	
 	sqlite3_finalize( pstmt );

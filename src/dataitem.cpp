@@ -222,7 +222,6 @@ namespace lsvpd
 	int DataItem::pack( void* buf )
 	{
 		char * buffer = (char*)buf;
-		int tmp;
 		int ret = getPackedLength( );
 
 		memcpy( buffer, ac.c_str( ), ac.length( ) );
@@ -257,7 +256,6 @@ namespace lsvpd
 		humanName = buf;
 		buf += ( humanName.length( ) + 1 );
 		dataValue = buf;
-		int pos;
 	}
 
 	/*

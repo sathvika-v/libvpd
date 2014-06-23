@@ -590,5 +590,5 @@ void add_component( struct component *head, const struct component *addme )
 	
 	while( head->next )
 		head = head->next;
-	head->next = addme;
+	head->next = (struct component *) addme;
 }

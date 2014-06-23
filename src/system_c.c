@@ -24,6 +24,7 @@
 #include <libvpd-2/system.h>
 #include <stdlib.h>
 #include <string.h>
+#include <netinet/in.h>
 
 struct system * new_system( int init )
 {

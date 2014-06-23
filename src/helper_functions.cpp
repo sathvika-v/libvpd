@@ -231,7 +231,6 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	{
 		int len = strlen(relPath);
 		int i = strlen(curDir);
-		int lastHit;
 		string tmp;
 
         if (len <= 0 || i <= 0)
@@ -243,7 +242,6 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 		i = 0;
 		while (strncmp(&relPath[i * 3], "../", 3) == 0) {
         	dropDir(curDir);
-        	lastHit = i;
         	i++;
         }
 
@@ -260,7 +258,6 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	bool HelperFunctions::matches(const string& s1, const string& s2)
 	{
 		int beg = 0, end = s1.length();
-		bool star = false;
 		int z;
 //		coutd << " s1 = " << s1 << ", s2 = " << s2 << endl;
 
@@ -338,7 +335,6 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	{
 		char *path;
 		char *chr;
-		int i;
 
 		path = strdup(path_t);
 		/* Basic wierdness checking*/
