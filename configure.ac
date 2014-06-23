@@ -38,6 +38,7 @@ VERSION=$GENERIC_VERSION
 AC_LANG([C++])
 AC_PROG_CC
 AC_PROG_CXX
+AC_PROG_CPP
 AC_C_CONST
 AC_C_INLINE
 AC_HEADER_STDBOOL
@@ -57,6 +58,7 @@ AC_CHECK_HEADERS([sqlite3.h],,[AC_MSG_ERROR([sqlite header files are required fo
 
 
 #libraries
+AC_PROG_RANLIB
 AC_CHECK_LIB(sqlite3, sqlite3_libversion_number, [], [
 			echo "sqlite3 library is required for lsvpd"
 			exit 1 ])
