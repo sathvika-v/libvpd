@@ -9,11 +9,11 @@ Summary:	VPD Database access library for lsvpd
 Group:		System Environment/Libraries
 License:	LGPLv2+
 Vendor:         IBM Corp.
-URL:		http://linux-diag.sf.net/Lsvpd.html
-Source:		http://downloads.sourceforge.net/linux-diag/%{name}-%{version}.tar.gz
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+URL:		http://linux-diag.sf.net/lsvpd.html
+Source:		http://downloads.sourceforge.net/linux-diag/%{name}/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:	sqlite-devel zlib-devel libstdc++-devel
+BuildRequires:	libtool automake
 
 %description
 The libvpd package contains the classes that are used to access a vpd database
@@ -30,10 +30,11 @@ Contains header files for building with libvpd.
 %setup -q
 
 %build
+./bootstrap.sh
 %configure --disable-static
 %{__make} %{?_smp_mflags}
 
-%clean 
+%clean
 %{__rm} -rf $RPM_BUILD_ROOT
 
 %install
@@ -44,9 +45,9 @@ Contains header files for building with libvpd.
 
 %postun -p /sbin/ldconfig
 
-%files 
+%files
 %defattr(-,root,root,-)
-%doc COPYING NEWS README AUTHORS
+%doc COPYING README
 %exclude %{_libdir}/*.la
 %{_libdir}/libvpd_cxx-@GENERIC_RELEASE@.so.*
 %{_libdir}/libvpd-@GENERIC_RELEASE@.so.*
