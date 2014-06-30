@@ -1,9 +1,16 @@
+#			-*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.69])
+
 #base
 AC_INIT([libvpd],[2.2.3],[hegdevasant@in.ibm.com,suzuki@in.ibm.com])
-AC_CONFIG_HEADER(src/libvpd-2/config.h)
-AM_INIT_AUTOMAKE
-AC_SUBST(DATE, [`date`])
+AC_CONFIG_HEADER([config/config.h])
+AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE([-Wall subdir-objects -Werror foreign])
+AC_SUBST(DATE, [`date`])
+AM_PROG_AR
 
 #Generic variable setup
 GENERIC_LIBRARY_NAME=libvpd
@@ -58,7 +65,6 @@ AC_CHECK_HEADERS([sqlite3.h],,[AC_MSG_ERROR([sqlite header files are required fo
 
 
 #libraries
-AC_PROG_RANLIB
 AC_CHECK_LIB(sqlite3, sqlite3_libversion_number, [], [
 			echo "sqlite3 library is required for lsvpd"
 			exit 1 ])

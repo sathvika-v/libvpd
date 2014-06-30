@@ -23,7 +23,7 @@
 #define TRACE_ON
 
 #ifdef HAVE_CONFIG_H
-#include <libvpd-2/config.h>
+#include <config.h>
 #endif
 
 #include <libvpd-2/dataitem.hpp>
