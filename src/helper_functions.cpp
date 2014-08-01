@@ -70,8 +70,8 @@ using namespace lsvpd;
  */
 string HelperFunctions::parseString(const string& line, int str_pos, string& out)
 {
-	int count = 0, pos = 0;
-	int beg, len;
+	unsigned int pos = 0;
+	int beg, len, count = 0;
 
 	do {
 		beg = line.find('"', pos) + 1;
@@ -257,8 +257,8 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	 */
 	bool HelperFunctions::matches(const string& s1, const string& s2)
 	{
-		int beg = 0, end = s1.length();
-		int z;
+		unsigned int beg = 0, end = s1.length();
+		unsigned int z;
 //		coutd << " s1 = " << s1 << ", s2 = " << s2 << endl;
 
 		//strings have matched to end - base case
@@ -306,7 +306,7 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	/* Caller responsible for deleting new'd memory */
 	void HelperFunctions::str2chr(char **str1, const string& str2)
 		{
-			int i;
+			unsigned int i;
 			*str1 = new char[ str2.length( ) * sizeof( char ) ];
 
 			i=0;

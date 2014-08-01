@@ -834,7 +834,7 @@ lderr:
 	 */
 	bool Component::isChild(Component *child)
 	{
-		for (int i = 0; i < mChildren.size(); i++)
+		for (unsigned int i = 0; i < mChildren.size(); i++)
 			if (mChildren[i] == child->idNode.getValue())
 				return true;
 		return false;
@@ -849,7 +849,7 @@ lderr:
 	 */
 	bool Component::isChild(const string& child)
 	{
-		for (int i = 0; i < mChildren.size(); i++)
+		for (unsigned int i = 0; i < mChildren.size(); i++)
 			if (mChildren[i] == child)
 				return true;
 		return false;
@@ -1028,7 +1028,7 @@ lderr:
 	bool Component::removeLeaf( int index )
 	{
 		vector<Component*>::iterator i = mLeaves.begin( );
-		if( index > mLeaves.size( ) )
+		if( index > ( int )mLeaves.size( ) )
 		{
 			return false;
 		}

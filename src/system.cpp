@@ -608,7 +608,7 @@ lderror:
 	bool System::removeLeaf( int index )
 	{
 		vector<Component*>::iterator i = mLeaves.begin( );
-		if( index > mLeaves.size( ) )
+		if( index > ( int )mLeaves.size( ) )
 		{
 			return false;
 		}

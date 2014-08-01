@@ -54,8 +54,8 @@ namespace lsvpd
 			VpdDbEnv& operator=( const VpdDbEnv& rhs ) { return (*this); }
 			VpdDbEnv( const VpdDbEnv& copyMe );
 
-			string mEnvDir;
 			string mDbFileName;
+			string mEnvDir;
 			string mDbPath;
 			sqlite3* mpVpdDb;
 

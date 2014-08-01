@@ -38,10 +38,10 @@ namespace lsvpd
 {
 	DataItem::DataItem( const DataItem& copyMe ) : humanName( copyMe.humanName ),
 		ac( copyMe.ac ), dataValue( copyMe.dataValue ),
-		prefLevelUsed(copyMe.prefLevelUsed), packedLength( 0 )
+		packedLength( 0 ), prefLevelUsed(copyMe.prefLevelUsed)
 	{}
 
-	DataItem::DataItem( ) : packedLength( 0 ), dataValue( "" )
+	DataItem::DataItem( ) : dataValue( " " ), packedLength( 0 )
 	{
 		prefLevelUsed = 0;
 	}
@@ -133,14 +133,14 @@ namespace lsvpd
 	int DataItem::setValue( const string& in, int prefLevelUsed_t,
 									 const char *file, int lineNum)
 	{
-		int i;
+		unsigned int i;
 
 		if ((prefLevelUsed_t > prefLevelUsed) && (!in.empty()))
 		{
 			string val( in );
 			// Get rid of any NULL bytes, new lines or carriage returns
 			i = 0;
-			int pos;
+			unsigned int pos;
 			while( ( pos = val.find( '\0' ) ) != string::npos ||
 				( pos = val.find( '\n' ) ) != string::npos ||
 				( pos = val.find( '\r' ) ) != string::npos )
