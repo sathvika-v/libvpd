@@ -41,7 +41,7 @@ namespace lsvpd
 		packedLength( 0 ), prefLevelUsed(copyMe.prefLevelUsed)
 	{}
 
-	DataItem::DataItem( ) : dataValue( " " ), packedLength( 0 )
+	DataItem::DataItem( ) : dataValue( "" ), packedLength( 0 )
 	{
 		prefLevelUsed = 0;
 	}
@@ -133,23 +133,23 @@ namespace lsvpd
 	int DataItem::setValue( const string& in, int prefLevelUsed_t,
 									 const char *file, int lineNum)
 	{
-		unsigned int i;
+		int i;
 
 		if ((prefLevelUsed_t > prefLevelUsed) && (!in.empty()))
 		{
 			string val( in );
 			// Get rid of any NULL bytes, new lines or carriage returns
 			i = 0;
-			unsigned int pos;
-			while( ( pos = val.find( '\0' ) ) != string::npos ||
-				( pos = val.find( '\n' ) ) != string::npos ||
-				( pos = val.find( '\r' ) ) != string::npos )
+			int pos;
+			while( ( pos = val.find( '\0' ) ) != (int)string::npos ||
+				( pos = val.find( '\n' ) ) != (int)string::npos ||
+				( pos = val.find( '\r' ) ) != (int)string::npos )
 			{
 				val.erase( pos, 1 );
 			}
 
 			// Get rid of leading and trailing whitespace
-			for( i = 0; i < val.length( ) && isspace( val.at( i ) ); i++ )
+			for( i = 0; i < (int)val.length( ) && isspace( val.at( i ) ); i++ )
 				val.erase( i, 1 );
 			for( i = val.length( ) - 1; i >= 0 && isspace( val.at( i ) ); i-- )
 				val.erase( i, 1 );
