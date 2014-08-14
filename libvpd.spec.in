@@ -3,7 +3,7 @@
 
 Name:		%{name}
 Version:	%{version}
-Release:	0%{?dist}
+Release:	1%{?dist}
 Summary:	VPD Database access library for lsvpd
 
 Group:		System Environment/Libraries
@@ -65,7 +65,12 @@ Contains header files for building with libvpd.
 
 %changelog
 
-* Wed Mar 13 2014 Suzuki K Poulose <suzuki@in.ibm.com> 2.2.3
+* Thu Aug 14 2014 Vasant Hegde <hegdevasant@linux.vnet.ibm.com> 2.2.4
+- Cleanup build tools
+- Shift configure.in to configure.ac
+- Remove out dated debian directory
+
+* Thu Mar 13 2014 Suzuki K Poulose <suzuki@in.ibm.com> 2.2.3
 - Relese version 2.2.3
 
 * Tue Nov 5 2013 Suzuki K Poulose <suzuki@in.ibm.com> 2.2.2-0
