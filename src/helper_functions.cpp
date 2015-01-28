@@ -28,9 +28,10 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
+#include <linux/limits.h>
 
 
-#define BUF_SIZE 512
+#define BUF_SIZE PATH_MAX
 
 using namespace std;
 using namespace lsvpd;
@@ -156,12 +157,13 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	 */
 	string HelperFunctions::getSymLinkTarget(const string& symLinkPath)
 	{
-		char linkTarget[BUF_SIZE], *buf;
-		
+		char linkTarget[BUF_SIZE], *buf = NULL;
+		memset (linkTarget, 0, BUF_SIZE);
+
 		buf = strdup(symLinkPath.c_str());
-		int len = readlink(buf, linkTarget, sizeof(
-			linkTarget));
-		linkTarget[len] = '\0';
+		if (buf !=  NULL)
+			readlink(buf, linkTarget, BUF_SIZE - 1);
+
 		return string(getAbsolutePath(linkTarget, buf));
 	}
 
