@@ -9,6 +9,7 @@ Summary:	VPD Database access library for lsvpd
 Group:		System Environment/Libraries
 License:	LGPLv2+
 Vendor:         IBM Corp.
+ExclusiveArch: ppc64 ppc ppc64le
 URL:		http://linux-diag.sf.net/lsvpd.html
 Source:		http://downloads.sourceforge.net/linux-diag/%{name}/%{version}/%{name}-%{version}.tar.gz
 
