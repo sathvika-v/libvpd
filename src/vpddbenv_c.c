@@ -50,8 +50,10 @@ struct vpddbenv * new_vpddbenv( const char *dir, const char *file )
 	
 	strncpy( ret->fullPath, ret->envDir , FULL_PATH_SIZE - 1);
 
-	strcat( ret->fullPath, "/" );
-	strcat( ret->fullPath, ret->dbFileName );
+	if (strlen(ret->fullPath) + 1 < FULL_PATH_SIZE)
+		strncat( ret->fullPath, "/" , 1 );
+	if (strlen(ret->fullPath) + strlen(ret->dbFileName) < FULL_PATH_SIZE)
+		strncat( ret->fullPath, ret->dbFileName, strlen (ret->dbFileName) );
 
 	ret->fullPath[FULL_PATH_SIZE - 1] = '\0';
 	
