@@ -24,7 +24,8 @@
 #include <libvpd-2/vpddbenv.h>
 #include <stdio.h>
 
-#define DATA_BUFFER_SIZE 12288
+#define DATA_BUFFER_SIZE	12288
+#define FULL_PATH_SIZE		(MAX_NAME_LENGTH * 2 + 2)
 
 struct vpddbenv * new_vpddbenv( const char *dir, const char *file )
 {
@@ -47,9 +48,12 @@ struct vpddbenv * new_vpddbenv( const char *dir, const char *file )
 	else
 		strncpy( ret->dbFileName, file, MAX_NAME_LENGTH );
 	
-	strcpy( ret->fullPath, ret->envDir );
+	strncpy( ret->fullPath, ret->envDir , FULL_PATH_SIZE - 1);
+
 	strcat( ret->fullPath, "/" );
 	strcat( ret->fullPath, ret->dbFileName );
+
+	ret->fullPath[FULL_PATH_SIZE - 1] = '\0';
 	
 	rc = sqlite3_open( ret->fullPath, &(ret->db) );
 	if( rc != SQLITE_OK )
