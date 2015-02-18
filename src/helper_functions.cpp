@@ -375,9 +375,11 @@ string HelperFunctions::readMatchFromFile(const string& file,
 			line = string(buf);
 			int loc = line.find(str);
 			if (loc == 0) {
+				fin.close();
 				return line;
 			}
 		}
+		fin.close();
 		return string("");
 	}
 	return string("");
