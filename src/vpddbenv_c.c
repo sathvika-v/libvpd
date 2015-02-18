@@ -40,14 +40,18 @@ struct vpddbenv * new_vpddbenv( const char *dir, const char *file )
 	
 	if( dir == NULL || strncmp( dir, "", MAX_NAME_LENGTH ) == 0 )
 		strcpy( ret->envDir, DEFAULT_ENV );
-	else
-		strncpy( ret->envDir, dir, MAX_NAME_LENGTH );
+	else {
+		strncpy( ret->envDir, dir, MAX_NAME_LENGTH - 1);
+		ret->envDir[MAX_NAME_LENGTH - 1] = '\0';
+	}
 	
 	if( file == NULL || strncmp( file, "", MAX_NAME_LENGTH ) == 0 )
 		strcpy( ret->dbFileName, DEFAULT_DB );
-	else
-		strncpy( ret->dbFileName, file, MAX_NAME_LENGTH );
-	
+	else {
+		strncpy( ret->dbFileName, file, MAX_NAME_LENGTH - 1 );
+		ret->dbFileName[MAX_NAME_LENGTH -1] = '\0';
+	}
+
 	strncpy( ret->fullPath, ret->envDir , FULL_PATH_SIZE - 1);
 
 	if (strlen(ret->fullPath) + 1 < FULL_PATH_SIZE)
