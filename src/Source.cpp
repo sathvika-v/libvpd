@@ -30,15 +30,15 @@ using namespace std;
 namespace lsvpd
 {
 
- 	ostream& operator<<( ostream& os, const Source& in )
- 	{
- 		os << "Source:" << in.srcRef << endl;
- 		os << "Data: " << in.data << endl;
- 		os << "ID: "<< in.id << endl;
+	ostream& operator<<( ostream& os, const Source& in )
+	{
+		os << "Source:" << in.srcRef << endl;
+		os << "Data: " << in.data << endl;
+		os << "ID: "<< in.id << endl;
 		os << "Source Type: "<< in.type << endl;
 		os << "Source Lines: " << in.lines << endl;
 		os << "Source Preference Level: " << in.preferenceLevel << endl;
 		return os;
- 	}
+	}
 }
 

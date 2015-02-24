@@ -38,15 +38,15 @@ namespace lsvpd
 	const string VpdDbEnv::TABLE_NAME ( "components" );
 	const string VpdDbEnv::ID         ( "comp_id" );
 	const string VpdDbEnv::DATA       ( "comp_data" );
-	
+
 	/*
 	 * The copy constructor is marked private but these things need to be
 	 * filled out to compile correctly.
 	 */
 	 VpdDbEnv::VpdDbEnv( const VpdDbEnv& copyMe ):
-	 	mDbFileName( copyMe.mDbFileName ), mEnvDir( copyMe.mEnvDir ),
-	 	mpVpdDb( NULL )
-	 	{ }
+		mDbFileName( copyMe.mDbFileName ), mEnvDir( copyMe.mEnvDir ),
+		mpVpdDb( NULL )
+		{ }
 
 	VpdDbEnv::VpdDbEnv( const string& envDir, const string& dbFileName,
 				bool readOnly = false ) :
@@ -57,10 +57,10 @@ namespace lsvpd
 		int rc;
 		Logger l;
 		ostringstream message;
-		
+
 		struct stat st;
 		bool dbExists;
-		
+
 		mDbPath = mEnvDir + "/" + mDbFileName;
 		dbExists = ( stat( mDbPath.c_str( ), &st ) ) == 0;
 		if( readOnly && !dbExists )
@@ -76,7 +76,7 @@ namespace lsvpd
 				sqlite3_errmsg( mpVpdDb ) << endl;
 			goto CON_ERR;
 		}
-		
+
 		if( !dbExists )
 		{
 			sqlite3_stmt *pstmt;
@@ -89,22 +89,22 @@ namespace lsvpd
 						stmt.length( ) + 1, &pstmt, &out );
 			if( rc != SQLITE_OK )
 			{
-				message << "SQLITE Error " << rc << ": " << 
+				message << "SQLITE Error " << rc << ": " <<
 					sqlite3_errmsg( mpVpdDb ) << endl;
 				goto CON_ERR;
 			}
-			
+
 			rc = sqlite3_step( pstmt );
 			if( rc != SQLITE_DONE )
 			{
-				message << "SQLITE Error " << rc << ": " << 
+				message << "SQLITE Error " << rc << ": " <<
 					sqlite3_errmsg( mpVpdDb ) << endl;
 				goto CON_ERR;
 			}
 			sqlite3_finalize( pstmt );
 		}
 		return;
-		
+
 CON_ERR:
 		l.log( message.str( ), LOG_ERR );
 		VpdException ve( message.str( ) );
@@ -121,7 +121,7 @@ CON_ERR:
 		{
 			Logger l;
 			ostringstream message;
-			message << "SQLITE Error " << rc << ": " << 
+			message << "SQLITE Error " << rc << ": " <<
 				sqlite3_errmsg( mpVpdDb ) << endl;
 			l.log( message.str( ), LOG_ERR );
 			VpdException ve( message.str( ) );
@@ -142,21 +142,21 @@ CON_ERR:
 					&pstmt, &out );
 		if( rc != SQLITE_OK )
 			goto FETCH_COMP_ERR;
-		
+
 		rc = sqlite3_step( pstmt );
 		if( rc != SQLITE_ROW && rc != SQLITE_DONE )
 			goto FETCH_COMP_ERR;
-		
+
 		if( rc == SQLITE_ROW )
 			ret = new Component( sqlite3_column_blob( pstmt, 0 ) );
-		
+
 		sqlite3_finalize( pstmt );
 		return ret;
 
 FETCH_COMP_ERR:
 		Logger l;
 		ostringstream message;
-		message << "SQLITE Error " << rc << ": " << 
+		message << "SQLITE Error " << rc << ": " <<
 			sqlite3_errmsg( mpVpdDb ) << endl;
 		l.log( message.str( ), LOG_ERR );
 		if( pstmt )
@@ -174,28 +174,28 @@ FETCH_COMP_ERR:
 		sqlite3_stmt *pstmt = NULL;
 		int rc;
 		const char *out;
-				
+
 		string sql = "SELECT " + DATA + " FROM " + TABLE_NAME + " WHERE " +
 				ID + "='" + System::ID + "';";
 		rc = SQLITE3_PREPARE( mpVpdDb, sql.c_str( ), sql.length( ) + 1,
 					&pstmt, &out );
 		if( rc != SQLITE_OK )
 			goto FETCH_SYS_ERR;
-		
+
 		rc = sqlite3_step( pstmt );
 		if( rc != SQLITE_ROW && rc != SQLITE_DONE )
 			goto FETCH_SYS_ERR;
-		
+
 		if( rc == SQLITE_ROW )
 			ret = new System( sqlite3_column_blob( pstmt, 0 ) );
-		
+
 		sqlite3_finalize( pstmt );
 		return ret;
 
 FETCH_SYS_ERR:
 		Logger l;
 		ostringstream message;
-		message << "SQLITE Error " << rc << ": " << 
+		message << "SQLITE Error " << rc << ": " <<
 			sqlite3_errmsg( mpVpdDb ) << endl;
 		l.log( message.str( ), LOG_ERR );
 		if( pstmt )
@@ -210,19 +210,19 @@ FETCH_SYS_ERR:
 		int rc;
 		const char *out;
 		sqlite3_stmt *pstmt = NULL;
-		
+
 		string sql = "INSERT INTO " + TABLE_NAME + " (" + ID + ", " + DATA +
 				") VALUES ('" + storeMe->getID( ) + "', ?);";
-		rc = SQLITE3_PREPARE( mpVpdDb, sql.c_str( ), sql.length( ) + 1, 
+		rc = SQLITE3_PREPARE( mpVpdDb, sql.c_str( ), sql.length( ) + 1,
 					&pstmt, &out );
 		if( rc != SQLITE_OK )
 			goto STORE_COMP_ERR;
-		
+
 		dataSize = storeMe->pack( &buffer );
 		rc = sqlite3_bind_blob( pstmt, 1, buffer, dataSize, SQLITE_TRANSIENT );
 		if( rc != SQLITE_OK )
 			goto STORE_COMP_ERR;
-		
+
 		rc = sqlite3_step( pstmt );
 		if( rc != SQLITE_DONE )
 			goto STORE_COMP_ERR;
@@ -237,7 +237,7 @@ STORE_COMP_ERR:
 			delete [] (char*)buffer;
 		Logger l;
 		ostringstream message;
-		message << "SQLITE Error " << rc << ": " << 
+		message << "SQLITE Error " << rc << ": " <<
 			sqlite3_errmsg( mpVpdDb ) << endl;
 		l.log( message.str( ), LOG_ERR );
 		sqlite3_finalize( pstmt );
@@ -251,19 +251,19 @@ STORE_COMP_ERR:
 		int rc;
 		const char *out;
 		sqlite3_stmt *pstmt = NULL;
-		
+
 		string sql = "INSERT INTO " + TABLE_NAME + " (" + ID + ", " + DATA +
 				") VALUES ('" + storeMe->getID( ) + "', ?);";
-		rc = SQLITE3_PREPARE( mpVpdDb, sql.c_str( ), sql.length( ) + 1, 
+		rc = SQLITE3_PREPARE( mpVpdDb, sql.c_str( ), sql.length( ) + 1,
 					&pstmt, &out );
 		if( rc != SQLITE_OK )
 			goto STORE_SYS_ERR;
-		
+
 		dataSize = storeMe->pack( &buffer );
 		rc = sqlite3_bind_blob( pstmt, 1, buffer, dataSize, SQLITE_TRANSIENT );
 		if( rc != SQLITE_OK )
 			goto STORE_SYS_ERR;
-		
+
 		rc = sqlite3_step( pstmt );
 		if( rc != SQLITE_DONE )
 			goto STORE_SYS_ERR;
@@ -272,13 +272,13 @@ STORE_COMP_ERR:
 			delete [] (char*)buffer;
 		sqlite3_finalize( pstmt );
 		return true;
-		
+
 STORE_SYS_ERR:
 		if( buffer != NULL )
 			delete [] (char*)buffer;
 		Logger l;
 		ostringstream message;
-		message << "SQLITE Error " << rc << ": " << 
+		message << "SQLITE Error " << rc << ": " <<
 			sqlite3_errmsg( mpVpdDb ) << endl;
 		l.log( message.str( ), LOG_ERR );
 		sqlite3_finalize( pstmt );
@@ -290,24 +290,24 @@ STORE_SYS_ERR:
 		int rc;
 		const char *out;
 		sqlite3_stmt *pstmt = NULL;
-		
+
 		string sql = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + "='" +
 			deviceID + "';";
-		rc = SQLITE3_PREPARE( mpVpdDb, sql.c_str( ), sql.length( ) + 1, 
+		rc = SQLITE3_PREPARE( mpVpdDb, sql.c_str( ), sql.length( ) + 1,
 					&pstmt, &out );
 		if( rc != SQLITE_OK )
 			goto REMOVE_ERR;
-		
+
 		rc = sqlite3_step( pstmt );
 		if( rc != SQLITE_DONE )
 			goto REMOVE_ERR;
 		sqlite3_finalize( pstmt );
 		return true;
-		
+
 REMOVE_ERR:
 		Logger l;
 		ostringstream message;
-		message << "SQLITE Error " << rc << ": " << 
+		message << "SQLITE Error " << rc << ": " <<
 			sqlite3_errmsg( mpVpdDb ) << endl;
 		l.log( message.str( ), LOG_ERR );
 		sqlite3_finalize( pstmt );
@@ -320,15 +320,15 @@ REMOVE_ERR:
 		sqlite3_stmt *pstmt = NULL;
 		int rc;
 		const char *out;
-				
+
 		string sql = "SELECT " + ID + " FROM " + TABLE_NAME + ";";
-		rc = SQLITE3_PREPARE( mpVpdDb, sql.c_str( ), sql.length( ) + 1, 
+		rc = SQLITE3_PREPARE( mpVpdDb, sql.c_str( ), sql.length( ) + 1,
 					&pstmt, &out );
 		if( rc != SQLITE_OK )
 		{
 			Logger l;
 			ostringstream message;
-			message << "SQLITE Error " << rc << ": " << 
+			message << "SQLITE Error " << rc << ": " <<
 				sqlite3_errmsg( mpVpdDb ) << endl;
 			l.log( message.str( ), LOG_ERR );
 			return ret;

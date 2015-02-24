@@ -246,14 +246,14 @@ namespace lsvpd
 
 	/**
 	 * pack serializes this object into the provided buffer (pack will
-	 * 	allocate the buffer) storing only the data fields (at the moment)
-	 * 	and ignoring all the meta-data within the DataItem object.
-	 * 	The format for the packed object will be direct strings seperated
-	 * 	by '\0' charaters.  If a given string field is empty then there will
-	 * 	be consectutive '\0' characters.  Each of the vector fields will be
-	 * 	preceeded by ::listNameStart:: and followed by ::listNameEnd::
-	 * 	(e.g. the children vector will be
-	 * 		::childrenStart::\0data\0data\0::childrenEnd::\0).
+	 *	allocate the buffer) storing only the data fields (at the moment)
+	 *	and ignoring all the meta-data within the DataItem object.
+	 *	The format for the packed object will be direct strings seperated
+	 *	by '\0' charaters.  If a given string field is empty then there will
+	 *	be consectutive '\0' characters.  Each of the vector fields will be
+	 *	preceeded by ::listNameStart:: and followed by ::listNameEnd::
+	 *	(e.g. the children vector will be
+	 *		::childrenStart::\0data\0data\0::childrenEnd::\0).
 	 */
 	unsigned int Component::pack( void** buffer )
 	{
@@ -969,7 +969,7 @@ lderr:
 		else
 			return NULL;
 	}
-		
+
 	void Component::addUserData( const string& ac, const string& humanName,
 		const string& val, int prefLvl = 1, bool clobber = false )
 	{

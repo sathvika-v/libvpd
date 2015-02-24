@@ -32,7 +32,7 @@ struct list* new_list( )
 	ret = malloc( sizeof( struct list ) );
 	if( !ret )
 		return ret;
-	
+
 	memset( ret, 0, sizeof( struct list ) );
 	return ret;
 }
@@ -56,10 +56,10 @@ struct list* concat_list( struct list *head, const struct list *addme )
 	struct list *ret = head;
 	if( !head || !addme )
 		return NULL;
-	
+
 	while( head->next )
 		head = head->next;
 	head->next = (struct list *) addme;
-	
+
 	return ret;
 }

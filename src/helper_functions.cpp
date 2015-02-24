@@ -38,8 +38,8 @@ using namespace lsvpd;
 
 	/**
 	 * findAIXFSEntry
-	 * @brief Finds AIX name which exists as a file or link in the dir 
-	 * 	'rootPath'
+	 * @brief Finds AIX name which exists as a file or link in the dir
+	 *	'rootPath'
 	 */
 	string HelperFunctions::findAIXFSEntry(vector <DataItem*> aixNames,
 											const string& rootPath)
@@ -49,7 +49,7 @@ using namespace lsvpd;
 		vector<DataItem*>::const_iterator i, end;
 		i = aixNames.begin();
 		end = aixNames.end();
-		
+
 		while (i != end) {
 			fin = rootPath + (*i)->getValue();
 			fd = open( fin.c_str( ), O_RDONLY | O_NONBLOCK );
@@ -84,7 +84,7 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	out = line.substr(beg, len - 1);
 	return out;
 }
-	
+
 	/**
 	 * parsePathr
 	 * @brief Reverse parse of a path, returning the node specified by 'count'
@@ -98,17 +98,17 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	{
 		int beg, end;
 		int i = count;
-		
+
 		if( path == "" )
 			return path;
-		
+
 		beg = end = path.length();
-		
+
 		if (path[end] == '/')
 			beg--;
-		
+
 		cout << "String: " << path << endl;
-		
+
 		while (i >= 0) {
 			end = beg - 1;
 			cout << "RFind Bef: beg: " << beg << ", end: " << end << ", i: " << i << endl;
@@ -116,10 +116,10 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 			cout << "RFind : beg: " << beg << ", end: " << end << ", i: " << i << endl;
 			i--;
 		}
-		
+
 		return path.substr(beg, end - beg);
 	}
-	
+
 	/**
 	 * parsePath
 	 * @brief Parse of a path, returning the node specified by 'count'
@@ -132,23 +132,23 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	string HelperFunctions::parsePath(const string& path, int count)
 	{
 		int beg = 0, end, i = count;
-		
+
 		if( path == "" )
 			return path;
-		
+
 		if (path[end] == '/')
 			end--;
-		
+
 		while (i >= 0) {
 			beg = path.find("/", beg) + 1;
 			i--;
 		}
-		
+
 		end = path.find("/", beg);
-		
+
 		return path.substr(beg, end - beg);
 	}
-	
+
 	/**
 	 * getSymLinkTarget
 	 * @brief Returns the absolute path pointed at by a sym link
@@ -226,7 +226,7 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 		free(filePath);
 		return ret;
 	}
-	
+
 	/* @brief Drops dirs from curDir, 1 for each '../', then add remainder of filePath
 	 * to curDir */
 	string HelperFunctions::getAbsolutePath(char * relPath, char * curDir)
@@ -236,22 +236,22 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 		string tmp;
 
         if (len <= 0 || i <= 0)
-        	return string();
+		return string();
 
 		while (i > 0 && curDir[i] != '/')
 			curDir[i--] = '\0';
 
 		i = 0;
 		while (strncmp(&relPath[i * 3], "../", 3) == 0) {
-        	dropDir(curDir);
-        	i++;
-        }
+			dropDir(curDir);
+			i++;
+		}
 
         tmp = string(curDir) + string(&relPath[i * 3]);
 
         return tmp;
 	}
-	
+
 	/**
 	 * Takes two strings and finds if the two are equivalent.
 	 * s1 can contain '*', meaning zero or more of anything can be
@@ -348,7 +348,7 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 
 		return path;
 	}
-	
+
 	bool HelperFunctions::file_exists(const string& file)
 	{
 		FILE *f = fopen(file.c_str(), "r");
@@ -358,18 +358,17 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	}
 
 /** readMatchFromFile
- *  @brief Returns first matching line from specified file, 
+ *  @brief Returns first matching line from specified file,
  *    in which was found a match to the specified string
-*/ 
-string HelperFunctions::readMatchFromFile(const string& file,
-											const string& str)
+*/
+string HelperFunctions::readMatchFromFile(const string& file, const string& str)
 {
 	char buf[BUF_SIZE];
 	string line;
-	
+
 	if (file_exists(file)) {
 		ifstream fin(file.c_str());
-		
+
 		while(!fin.eof()) {
 			fin.getline(buf,BUF_SIZE - 1);
 			line = string(buf);
