@@ -147,8 +147,11 @@ CON_ERR:
 		if( rc != SQLITE_ROW && rc != SQLITE_DONE )
 			goto FETCH_COMP_ERR;
 
-		if( rc == SQLITE_ROW )
+		if( rc == SQLITE_ROW ) {
 			ret = new Component( sqlite3_column_blob( pstmt, 0 ) );
+			if ( ret == NULL )
+				return ret;
+		}
 
 		sqlite3_finalize( pstmt );
 		return ret;
@@ -186,8 +189,11 @@ FETCH_COMP_ERR:
 		if( rc != SQLITE_ROW && rc != SQLITE_DONE )
 			goto FETCH_SYS_ERR;
 
-		if( rc == SQLITE_ROW )
+		if( rc == SQLITE_ROW ) {
 			ret = new System( sqlite3_column_blob( pstmt, 0 ) );
+			if ( ret == NULL )
+				return ret;
+		}
 
 		sqlite3_finalize( pstmt );
 		return ret;

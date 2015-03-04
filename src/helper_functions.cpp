@@ -310,15 +310,16 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 		{
 			unsigned int i;
 			*str1 = new char[ str2.length( ) * sizeof( char ) ];
+			if ( *str1 != NULL ) {
+				i=0;
+				while (i < str2.length())
+				{
+					(*str1)[i] = str2[i];
+					i++;
+				}
 
-			i=0;
-			while (i < str2.length())
-			{
-				(*str1)[i] = str2[i];
-				i++;
+				(*str1)[i] = '\0';
 			}
-
-			(*str1)[i] = '\0';
 		}
 
 	/* @brief Ensure a passed in fs path arg is in reasonable format */

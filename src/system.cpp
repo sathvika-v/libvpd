@@ -470,6 +470,10 @@ namespace lsvpd
 			while( DEVICE_END != item )
 			{
 				DataItem* d = new DataItem( next );
+				if ( d == NULL ) {
+					VpdException ve( "Out of memory." );
+					throw ve;
+                                }
 				next += d->getPackedLength( );
 				if( next > packed + size )
 				{
@@ -492,6 +496,10 @@ namespace lsvpd
 			while( USER_END != item )
 			{
 				DataItem* d = new DataItem( next );
+				if ( d == NULL ) {
+					VpdException ve( "Out of memory." );
+					throw ve;
+                                }
 				next += d->getPackedLength( );
 				if( next > packed + size )
 				{
