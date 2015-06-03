@@ -562,14 +562,39 @@ string HelperFunctions::readMatchFromFile(const string& file, const string& str)
 	int HelperFunctions::execCmd( const char *cmd, string& output )
 	{
 		char buf[BUF_SIZE];
-		FILE *fp = popen(cmd, "r");
+		char *system_args[32] = {NULL,};
+		pid_t cpid;
+		int i = 0;
+		int rc = -1;
+		istringstream ss(cmd);
+		string s;
+		FILE *fp;
 
+		while ( ss >> s ) {
+			if (i < 32) {
+				system_args[i] = strdup(s.c_str());
+				if (system_args[i] == NULL)
+					goto free_mem;
+				i++;
+			} else {
+				goto free_mem;
+			}
+		}
+
+		fp = spopen(system_args, &cpid);
 		if (fp == NULL)
-			return 1;
+			goto free_mem;
 
 		while ( !feof(fp) )
 			if (fgets(buf, BUF_SIZE - 1, fp) != NULL)
 				output += buf;
-		pclose(fp);
-		return 0;
+
+		spclose(fp, cpid);
+		rc = 0;
+
+free_mem:
+		for (i -= 1; i >= 0; i--)
+			free(system_args[i]);
+
+		return rc;
 	}
