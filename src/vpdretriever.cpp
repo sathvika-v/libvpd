@@ -29,9 +29,14 @@
 #include <string>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <time.h>
 #include <cstdlib>
 #include <errno.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -87,8 +92,54 @@ namespace lsvpd
 				 * after the VPD db was created/modified. So
 				 * run vpdupdate.
 				 */
+				pid_t cpid;	/* Pid of child */
+				int rc;		/* Holds return value */
+				int status;	/* exit value of child */
+
 				logger.log( "libvpd: Running vpdupdate to update the default db.", LOG_INFO );
-				system( "vpdupdate >/dev/null 2>&1" );
+				cpid = fork();
+				if (cpid == -1) {	/* fork failed */
+					logger.log("libvpd: Fork failed, while running vpdupdate\n", LOG_INFO);
+					VpdException ve( "libvpd: Fork failed, while running vpdupdate\n" );
+					throw ve;
+				} else if (cpid == 0) {	/* child */
+					char *system_arg[2];
+					int nullfd;
+
+					system_arg[0] = (char *)"/usr/sbin/vpdupdate";
+					system_arg[1] = NULL;
+
+					nullfd = open("/dev/null", O_WRONLY);
+					if (nullfd == -1) {
+						fprintf(stderr, "%s: Failed to "
+							"open /dev/null\n", __func__);
+						exit(-2);
+					}
+
+					if (dup2(nullfd, STDOUT_FILENO) == -1) {
+						 fprintf(stderr, "%s: Failed to redirect "
+							 "stderr to /dev/null\n", __func__);
+						 close(nullfd);
+						 exit(-2);
+					}
+
+					if (dup2(nullfd, STDERR_FILENO) == -1) {
+						 fprintf(stderr, "%s: Failed to redirect "
+							 "stdout to /dev/null\n", __func__);
+						 close(nullfd);
+						 exit(-2);
+					}
+
+					execv(system_arg[0], system_arg);
+					exit(-2);
+				} else {	/* parent */
+					rc = waitpid(cpid, &status, 0);
+					if (rc == -1)
+						logger.log("libvpd: wait failed, while running vpdupdate\n", LOG_INFO);
+					if (WIFEXITED(status) &&
+					    (signed char)WEXITSTATUS(status) == -2)
+						logger.log("libvpd: execv failed\n", LOG_INFO);
+				}
 			}
 		}
 		db = new VpdDbEnv( VpdRetriever::DEFAULT_DIR,
