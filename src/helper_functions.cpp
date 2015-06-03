@@ -483,7 +483,7 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	char *HelperFunctions::fs_fixPath(char *path_t)
 	{
 		char *path;
-		char *chr;
+		char *chr = NULL;
 
 		path = strdup(path_t);
 		/* Basic wierdness checking*/
