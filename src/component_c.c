@@ -206,7 +206,6 @@ outerr:
 void free_component( struct component *freeme )
 {
 	struct component *this, *next;
-	struct list *ids;
 
 	/* Free dataitems */
 	free_dataitem( freeme->id );
@@ -259,16 +258,7 @@ void free_component( struct component *freeme )
 		this = next;
 	}
 
-	if( freeme->childrenIDs )
-	{
-		ids = freeme->childrenIDs;
-		while( ids )
-		{
-			free_list( ids );
-			ids = ids->next;
-		}
-	}
-
+	free_list( freeme->childrenIDs );
 	free( freeme );
 }
 
