@@ -277,7 +277,7 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	 */
 	string HelperFunctions::parsePath(const string& path, int count)
 	{
-		int beg = 0, end, i = count;
+		int beg = 0, end = 0, i = count;
 
 		if( path == "" )
 			return path;
@@ -297,20 +297,18 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 
 	/**
 	 * getSymLinkTarget
-	 * @brief Returns the absolute path pointed at by a sym link
+	 * @brief Returns the absolute path of regular file pointed at by a sym link
 	 * @param full path of sym link
 	 * @return String abs target
 	 */
 	string HelperFunctions::getSymLinkTarget(const string& symLinkPath)
 	{
-		char linkTarget[BUF_SIZE], *buf = NULL;
-		memset (linkTarget, 0, BUF_SIZE);
+		char linkTarget[PATH_MAX];
 
-		buf = strdup(symLinkPath.c_str());
-		if (buf !=  NULL)
-			readlink(buf, linkTarget, BUF_SIZE - 1);
+		if ( realpath( symLinkPath.c_str(), linkTarget ) == NULL )
+			return string();
 
-		return string(getAbsolutePath(linkTarget, buf));
+		return string( linkTarget );
 	}
 
 /* Drops one dir entry on the end of a path
