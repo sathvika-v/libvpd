@@ -453,7 +453,7 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	void HelperFunctions::str2chr(char **str1, const string& str2)
 		{
 			unsigned int i;
-			*str1 = new char[ str2.length( ) * sizeof( char ) ];
+			*str1 = new char[ str2.length( ) * sizeof( char ) + 1 ];
 			if ( *str1 != NULL ) {
 				i=0;
 				while (i < str2.length())
