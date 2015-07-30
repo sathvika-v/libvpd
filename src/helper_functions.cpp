@@ -371,29 +371,35 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 		return ret;
 	}
 
-	/* @brief Drops dirs from curDir, 1 for each '../', then add remainder of filePath
-	 * to curDir */
+	/* getAbsolutePath
+	 * @brief It returns the absolute Path of Destination string(file/Dir)
+	 * where symlink points to.
+	 * @param relative path of destination directory w.r.t curDir
+	 * @param Absolute path of symlink(file/folder)
+	 * @return Absolute path of Destination Directory(i.e relPath), where
+	 * symlink(curDir) points to.
+	 */
 	string HelperFunctions::getAbsolutePath(char * relPath, char * curDir)
 	{
-		int len = strlen(relPath);
-		int i = strlen(curDir);
-		string tmp;
+		/* Converting it to string class object, to escape NULL checking */
+		string relPath_s(relPath), curDir_s(curDir);
 
-        if (len <= 0 || i <= 0)
-		return string();
+		/* If string is empty */
+		if ( relPath_s.empty() || curDir_s.empty() )
+			return string();
 
-		while (i > 0 && curDir[i] != '/')
-			curDir[i--] = '\0';
+		/* If relPath_s contains absolute path, then return relPath_s */
+		if ( relPath_s[0] == '/' )
+			return relPath_s;
 
-		i = 0;
-		while (strncmp(&relPath[i * 3], "../", 3) == 0) {
-			dropDir(curDir);
-			i++;
-		}
+		string rpath = curDir_s + '/' + relPath_s;
 
-        tmp = string(curDir) + string(&relPath[i * 3]);
+		char linkTarget[PATH_MAX];
 
-        return tmp;
+		if ( realpath( rpath.c_str(), linkTarget ) == NULL )
+			return string();
+
+		return string( linkTarget );
 	}
 
 	/**
