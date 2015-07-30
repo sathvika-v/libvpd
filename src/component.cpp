@@ -704,6 +704,7 @@ namespace lsvpd
 				next += d->getPackedLength( );
 				if( next > packed + size )
 				{
+					delete ( d );
 					goto lderr;
 				}
 				mDeviceSpecific.push_back( d );
@@ -731,6 +732,7 @@ namespace lsvpd
 				next += d->getPackedLength( );
 				if( next > packed + size )
 				{
+					delete ( d );
 					goto lderr;
 				}
 				mUserData.push_back( d );
@@ -757,6 +759,7 @@ namespace lsvpd
 				next += d->getPackedLength( );
 				if( next > packed + size )
 				{
+					delete ( d );
 					goto lderr;
 				}
 				mAIXNames.push_back( d );
@@ -1012,20 +1015,21 @@ lderr:
 
 	void Component::addAIXName( const string& val, int prefLvl = 1 )
 	{
-		DataItem *d = new DataItem( );
 		vector<DataItem*>::const_iterator j, stop;
 		j = getAIXNames().begin();
 		stop =getAIXNames().end();
 
-		if( d == NULL )
-		{
-			VpdException ve( "Out of memory." );
-			throw ve;
-		}
 		/* Already present - remove */
 		for (;j != stop; j++) {
 			if (val == (*j)->getValue())
 				return;
+		}
+
+		DataItem *d = new DataItem( );
+		if( d == NULL )
+		{
+			VpdException ve( "Out of memory." );
+			throw ve;
 		}
 
 		d->ac = "AX";

@@ -477,6 +477,7 @@ namespace lsvpd
 				next += d->getPackedLength( );
 				if( next > packed + size )
 				{
+					delete ( d );
 					goto lderror;
 				}
 				mDeviceSpecific.push_back( d );
@@ -503,6 +504,7 @@ namespace lsvpd
 				next += d->getPackedLength( );
 				if( next > packed + size )
 				{
+					delete ( d );
 					goto lderror;
 				}
 				mDeviceSpecific.push_back( d );
