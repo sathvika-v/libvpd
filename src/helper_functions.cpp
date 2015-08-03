@@ -22,6 +22,7 @@
  ***************************************************************************/
 
 #include <libvpd-2/helper_functions.hpp>
+#include <libvpd-2/logger.hpp>
 #include <cstdio>
 #include <fcntl.h>
 #include <unistd.h>
@@ -483,19 +484,26 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 			str[i] = '\0';
 	}
 
-	/* @brief Ensure a passed in fs path arg is in reasonable format */
+	/* @brief Ensure a passed in fs path arg is in reasonable format
+	 * It mainly checks for '/' in the end.
+	 * @param e.g: /proc/device-tree
+	 */
 	char *HelperFunctions::fs_fixPath(char *path_t)
 	{
 		char *path;
 		char *chr = NULL;
 
+		if ( path_t == NULL )
+			return NULL;
+
 		path = strdup(path_t);
-		/* Basic wierdness checking*/
-			chr = &path[strlen(path)];
-			while (chr != '\0')
-				chr--;
-			if (*chr == '/')
-				*chr = '\0';
+		if ( path == NULL )
+			return NULL;
+
+		/* Basic weirdness checking */
+		chr = &path[strlen(path) - 1];
+		if ( *chr == '/' )
+			*chr = '\0';
 
 		return path;
 	}
