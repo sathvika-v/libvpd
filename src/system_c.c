@@ -269,6 +269,10 @@ struct system * unpack_system( void * buffer )
 			if( !next )
 				goto unpackerr;
 			item->data = strdup( next );
+			if (item->data == NULL) {
+				free(item);
+				goto unpackerr;
+			}
 			next = next + strlen( (char*)item->data ) + 1;
 			if( !ret->childrenIDs )
 				ret->childrenIDs = item;

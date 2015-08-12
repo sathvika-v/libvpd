@@ -84,6 +84,9 @@ int calc_packed_length_dataitem( struct dataitem *packme )
 
 struct dataitem * unpack_dataitem( void *buffer )
 {
+	if (buffer == NULL)
+		return NULL;
+
 	char *buf = (char*)buffer;
 	struct dataitem *ret = NULL;
 
@@ -92,11 +95,24 @@ struct dataitem * unpack_dataitem( void *buffer )
 		return ret;
 
 	ret->ac = strdup( buf );
+	if (ret->ac == NULL)
+		goto unpackerr;
 	buf += strlen( ret->ac ) + 1;
+
 	ret->humanName = strdup( buf );
+	if (ret->humanName == NULL)
+		goto unpackerr;
 	buf += strlen( ret->humanName ) + 1;
+
 	ret->dataValue = strdup( buf );
+	if (ret->dataValue == NULL)
+		goto unpackerr;
+
 	return ret;
+
+unpackerr:
+	free_dataitem(ret);
+	return NULL;
 }
 
 void add_dataitem( struct dataitem *head, const struct dataitem *addme )
