@@ -135,6 +135,7 @@ CON_ERR:
 		sqlite3_stmt *pstmt = NULL;
 		int rc;
 		const char *out;
+		ostringstream message;
 		string sql = "SELECT " + DATA + " FROM " + TABLE_NAME + " WHERE " +
 				ID + "='" + deviceID + "';";
 
@@ -148,20 +149,23 @@ CON_ERR:
 			goto FETCH_COMP_ERR;
 
 		if( rc == SQLITE_ROW ) {
-			ret = new Component( sqlite3_column_blob( pstmt, 0 ) );
-			if ( ret == NULL )
-				return ret;
+			try {
+				ret = new Component( sqlite3_column_blob( pstmt, 0 ) );
+			}
+			catch (std::bad_alloc& ba) {
+				message << "SQLITE Error: call to new() failed " << endl;
+				goto FETCH_NEW_FAILED;
+			}
 		}
 
 		sqlite3_finalize( pstmt );
 		return ret;
 
 FETCH_COMP_ERR:
-		Logger l;
-		ostringstream message;
 		message << "SQLITE Error " << rc << ": " <<
 			sqlite3_errmsg( mpVpdDb ) << endl;
-		l.log( message.str( ), LOG_ERR );
+FETCH_NEW_FAILED:
+		Logger().log( message.str( ), LOG_ERR );
 		if( pstmt )
 			sqlite3_finalize( pstmt );
 		return ret;
@@ -177,6 +181,7 @@ FETCH_COMP_ERR:
 		sqlite3_stmt *pstmt = NULL;
 		int rc;
 		const char *out;
+		ostringstream message;
 
 		string sql = "SELECT " + DATA + " FROM " + TABLE_NAME + " WHERE " +
 				ID + "='" + System::ID + "';";
@@ -190,20 +195,23 @@ FETCH_COMP_ERR:
 			goto FETCH_SYS_ERR;
 
 		if( rc == SQLITE_ROW ) {
-			ret = new System( sqlite3_column_blob( pstmt, 0 ) );
-			if ( ret == NULL )
-				return ret;
+			try {
+				ret = new System( sqlite3_column_blob( pstmt, 0 ) );
+			}
+			catch (std::bad_alloc& ba) {
+				message << "SQLITE Error: call to new() failed " << endl;
+				goto FETCH_NEW_FAILED;
+			}
 		}
 
 		sqlite3_finalize( pstmt );
 		return ret;
 
 FETCH_SYS_ERR:
-		Logger l;
-		ostringstream message;
 		message << "SQLITE Error " << rc << ": " <<
 			sqlite3_errmsg( mpVpdDb ) << endl;
-		l.log( message.str( ), LOG_ERR );
+FETCH_NEW_FAILED:
+		Logger().log( message.str( ), LOG_ERR );
 		if( pstmt )
 			sqlite3_finalize( pstmt );
 		return ret;
