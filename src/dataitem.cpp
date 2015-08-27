@@ -149,8 +149,8 @@ namespace lsvpd
 			}
 
 			// Get rid of leading and trailing whitespace
-			for( i = 0; i < (int)val.length( ) && isspace( val.at( i ) ); i++ )
-				val.erase( i, 1 );
+			for (; val.length( ) > 0 && isspace( val.at( 0 ) ); val.erase( 0, 1 ));
+
 			for( i = val.length( ) - 1; i >= 0 && isspace( val.at( i ) ); i-- )
 				val.erase( i, 1 );
 
