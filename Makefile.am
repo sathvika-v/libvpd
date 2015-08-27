@@ -24,7 +24,7 @@ lib_LTLIBRARIES = libvpd_cxx.la libvpd.la
 library_includedir=$(includedir)/libvpd-2/
 library_include_HEADERS = $(lib_hpp_files) $(lib_h_files)
 
-AM_CPPFLAGS = -I./src/
+AM_CPPFLAGS = -I./src/ -Wall -fstack-protector-all -fPIE -Wstack-protector
 ACLOCAL_AMFLAGS = -I m4
 
 libvpd_la_SOURCES = src/vpdretriever_c.c \
