@@ -98,7 +98,7 @@ namespace lsvpd
 			/**
 			 * @brief
 			 *   If the sysFsNode is a sym link, this is the resolved path
-			 * 		Should point to /sys/devices/*
+			 * 		Should point to /sys/devices/\*
 			 */
 			DataItem sysFsLinkTarget;
 
