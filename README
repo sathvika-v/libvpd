@@ -1,36 +1,82 @@
-libvpd 2.1.0  
+libvpd:
+-------
+The libvpd package contains the classes that are used to access a vpd database
+created by vpdupdate in the lsvpd package.
 
-Installation (briefly, For more detailed instructions please see ./INSTALL) :
-	# ./bootstrap.sh
-	# ./configure [--prefix=/usr/]
-	# make
-	# make install
+Source:
+-------
+http://linux-diag.sf.net/lsvpd.html
 
-Binary Dependencies
-	zlib
+Mailing list:
+-------------
+linux-diag-devel@lists.sourceforge.net
+Info/subscribe : https://lists.sourceforge.net/lists/listinfo/linux-diag-devel
 
-Compilation Dependencies
-	Sqlite3 development package
-	  (Src: http://www.sqlite.org/)
-	ZLIB development package
-  	  (Src: http://www.zlib.net/zlib-1.2.3.tar.gz)
+License:
+--------
+See 'COPYING' file.
 
-For users of older RHEL and SLES versions:
-slqite is not available in the default repositories for some of the older
-RHEL and SLES versions.  If you want to run the new lsvpd/libvpd setup
-you need build sqlite version 3.0.0 or newer from source (available here:
-http://www.sqlite.org) or find an appropriate binary package for your
-architecture and software setup.
+Compilation dependencies:
+-------------------------
+- C and C++ compiler (gcc, g++)
+- GNU build tools (automake, autoconf, libtool, etc)
+- sg3_utils-devel
+- zlib-devel
 
+Binary dependencies:
+-------------
+- sqlite3
+- zlib
 
-BUILDING RPMS
+Note:
+  - Package name may differ slightly between Linux distributors. Ex: RedHat and
+    SLES ships development packages as "-devel" while Ubuntu ships it as "-dev"
+    package. Please check your linux distribution package naming convention and
+    make sure you have installed right packages.
+  - For users of older RHEL and SLES versions
+    slqite is not available in the default repositories for some of the older
+    RHEL (<= 5.x?) and SLES (<= 10.x?) versions. If you want to run the new
+    lsvpd/libvpd setup you need build sqlite version 3.0.0 or newer from
+    source (available here: http://www.sqlite.org) or find an appropriate
+    binary package for your architecture and software setup.
 
+Building:
+---------
+You can build on Power Linux system.
+
+$ ./bootstrap.sh
+$ ./configure [--prefix=/usr/]
+$ make
+$ make install
+
+Building rpms:
+--------------
 To build a tarball to feed to rpmbuild, do
-	# make dist
 
-It is necessary to specify that the target architecture is 32 bit when 
-building the rpm for this package.  
+$ make dist-gzip
 
 As an example, we use a command similar to the following:
 
-> rpmbuild -ba --prefix=/usr --target=ppc --nodeps [PATH TO SPEC FILE]
+$ rpmbuild -ba [--target=ppc/ppc64] <path-to-spec-file>
+
+Hacking:
+--------
+All patches should be sent to the mailing list with linux-kernel style
+'Signed-Off-By'. The following git commands are your friends:
+- git commit -s
+- git format-patch
+
+You probably want to read the linux Documentation/SubmittingPatches as
+much of it applies to libvpd.
+
+Submitting patch:
+-----------------
+We use same mailing list for all Power Linux VPD and diagnostics projects
+(ppc64-diag, libvpd, lsvpd, [lib]servicelog). It is common convention to
+prefix your subject line with project name. This lets maintainer and other
+developers more easily identify patches from patches targeted to other
+projects. For example,
+
+  Subject: [libvpd PATCH 01/10] Summary phrase
+
+--
