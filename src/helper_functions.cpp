@@ -35,6 +35,7 @@
 #include <sstream>
 #include <sys/wait.h>
 #include <linux/limits.h>
+#include <libgen.h>
 
 
 #define BUF_SIZE PATH_MAX
@@ -393,8 +394,9 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 		if ( relPath_s[0] == '/' )
 			return relPath_s;
 
-		string rpath = curDir_s + '/' + relPath_s;
+		curDir_s =  dirname((char *)curDir_s.c_str());
 
+		string rpath = curDir_s + '/' + relPath_s;
 		char linkTarget[PATH_MAX];
 
 		if ( realpath( rpath.c_str(), linkTarget ) == NULL )
