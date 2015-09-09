@@ -215,22 +215,43 @@ int spclose(FILE *stream, pid_t cpid)
  * parseString
  * @brief Parses out strings based on a count of position [0...x],
  *  with beginning and end of each string given by a '"'.
- * Ex: '"string 0" ... "string 1" ... "string 2" ...
+ * Ex: "string 0" ... "string 1" ... "string 2" ...
+ * If position is less/more than the string available, then it logs
+ * an error and returns empty string.
  */
 string HelperFunctions::parseString(const string& line, int str_pos, string& out)
 {
-	unsigned int pos = 0;
-	int beg, len, count = 0;
+        size_t pos = 0, beg = 0;
+	int str_pos_prov = str_pos;
 
-	do {
-		beg = line.find('"', pos) + 1;
-		pos = line.find('"', beg) + 1;
-		len = pos - beg;
-		count++;
-		} while  ((pos != string::npos) && (count < str_pos));
+	if (line == "")
+		return string();
 
-	out = line.substr(beg, len - 1);
-	return out;
+        if (str_pos <= 0) {
+		log_info("Invalid position : %d", str_pos);
+                return string();
+        }
+
+        while (str_pos > 0) {
+                beg = line.find('"', pos);
+                if (beg == string::npos) {
+			log_info("String not found at position: %d",
+				 (str_pos_prov - str_pos) + 1);
+                        return string();
+                }
+
+                pos = line.find('"', beg + 1);
+                if (pos == string::npos) {
+			log_info("String at position %d not terminated properly",
+				 (str_pos_prov - str_pos) + 1);
+                        return string();
+                }
+                pos++;
+                str_pos--;
+	}
+
+        out = line.substr(beg + 1, pos - beg - 2);
+        return out;
 }
 
 	/**
