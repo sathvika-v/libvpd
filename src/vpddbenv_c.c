@@ -90,17 +90,18 @@ struct component* fetch_component( struct vpddbenv *db, const char *deviceID )
 	sqlite3_stmt *pstmt = NULL;
 	int rc;
 	const char *out;
-	char sql[ QUERY_BUF_LENGTH ];
-	memset( sql, 0, QUERY_BUF_LENGTH );
-	
-	snprintf( sql, QUERY_BUF_LENGTH, "SELECT %s FROM %s WHERE %s='%s';",
-			DATA, TABLE_NAME, ID, deviceID );
+	const char sql[QUERY_BUF_LENGTH] = "SELECT " DATA " FROM " TABLE_NAME " WHERE " ID "=?";
 
 	rc = SQLITE3_PREPARE( db->db, sql, strlen( sql ) + 1,
 				&pstmt, &out );
 	if( rc != SQLITE_OK )
 		goto FETCH_COMP_ERR;
-	
+
+	rc = sqlite3_bind_text(pstmt, 1, deviceID,
+			       strlen(deviceID), SQLITE_STATIC);
+	if (rc != SQLITE_OK)
+		goto FETCH_COMP_ERR;
+
 	rc = sqlite3_step( pstmt );
 	if( rc != SQLITE_ROW && rc != SQLITE_DONE )
 		goto FETCH_COMP_ERR;

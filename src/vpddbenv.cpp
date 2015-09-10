@@ -137,11 +137,16 @@ CON_ERR:
 		const char *out;
 		ostringstream message;
 		string sql = "SELECT " + DATA + " FROM " + TABLE_NAME + " WHERE " +
-				ID + "='" + deviceID + "';";
+				ID + "=?";
 
 		rc = SQLITE3_PREPARE( mpVpdDb, sql.c_str( ), sql.length( ) + 1,
 					&pstmt, &out );
 		if( rc != SQLITE_OK )
+			goto FETCH_COMP_ERR;
+
+		rc = sqlite3_bind_text(pstmt, 1, deviceID.c_str(),
+				       deviceID.length(), SQLITE_STATIC);
+		if (rc != SQLITE_OK)
 			goto FETCH_COMP_ERR;
 
 		rc = sqlite3_step( pstmt );
