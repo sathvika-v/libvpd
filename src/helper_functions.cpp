@@ -410,7 +410,7 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	 */
 	bool HelperFunctions::matches(const string& s1, const string& s2)
 	{
-		unsigned int beg = 0, end = s1.length();
+		unsigned int beg = 0, end;
 		unsigned int z;
 //		coutd << " s1 = " << s1 << ", s2 = " << s2 << endl;
 
