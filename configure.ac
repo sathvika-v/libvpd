@@ -4,7 +4,7 @@
 AC_PREREQ([2.69])
 
 #base
-AC_INIT([libvpd],[2.2.4],[hegdevasant@in.ibm.com,suzuki@in.ibm.com])
+AC_INIT([libvpd],[2.2.4],[hegdevasant@in.ibm.com,kamaleshb@in.ibm.com])
 AC_CONFIG_HEADER([config/config.h])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([m4])
