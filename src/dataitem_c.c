@@ -42,28 +42,20 @@ struct dataitem* new_dataitem( )
 
 void free_dataitem( struct dataitem *freeme )
 {
-	struct dataitem *next = NULL;
 	struct dataitem *this = NULL;
 
-	if( !freeme )
-		return;
+	while (freeme) {
+		if (freeme->humanName)
+			free(freeme->humanName);
+		if (freeme->ac)
+			free(freeme->ac);
+		if (freeme->dataValue)
+			free(freeme->dataValue);
 
-	if( freeme->humanName )
-		free( freeme->humanName );
-	if( freeme->ac )
-		free( freeme->ac );
-	if( freeme->dataValue )
-		free( freeme->dataValue );
-
-	this = freeme->next;
-	while( this )
-	{
-		next = this->next;
-		free_dataitem( this );
-		this = next;
+		this = freeme->next;
+		free(freeme);
+		freeme = this;
 	}
-
-	free( freeme );
 }
 
 int calc_packed_length_dataitem( struct dataitem *packme )
