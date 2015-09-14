@@ -49,13 +49,12 @@ namespace lsvpd
 	VpdRetriever::VpdRetriever( string envDir,
 		string dbFileName ) throw( VpdException& )
 	{
-		db = new VpdDbEnv( envDir, dbFileName, true );
-
-		if( db == NULL )
-		{
-			Logger logger;
-			logger.log( "Out of memory, failed to build VpdEnv.", LOG_ERR );
-			VpdException ve( "Out of memory, failed to build VpdEnv." );
+		try {
+			db = new VpdDbEnv( envDir, dbFileName, true );
+		}
+		catch (std::bad_alloc& ba) {
+			log_err("Out of memory, failed to build VpdEnv.");
+			VpdException ve("Out of memory, failed to build VpdEnv.");
 			throw ve;
 		}
 	}
@@ -142,14 +141,13 @@ namespace lsvpd
 				}
 			}
 		}
-		db = new VpdDbEnv( VpdRetriever::DEFAULT_DIR,
-					VpdRetriever::DEFAULT_FILE, true );
-
-		if( db == NULL )
-		{
-			Logger logger;
-			logger.log( "Out of memory, failed to build VpdEnv.", LOG_ERR );
-			VpdException ve( "Out of memory, failed to build VpdEnv." );
+		try {
+			db = new VpdDbEnv( VpdRetriever::DEFAULT_DIR,
+					   VpdRetriever::DEFAULT_FILE, true );
+		}
+		catch (std::bad_alloc& ba) {
+			log_err("Out of memory, failed to build VpdEnv.");
+			VpdException ve("Out of memory, failed to build VpdEnv.");
 			throw ve;
 		}
 	}

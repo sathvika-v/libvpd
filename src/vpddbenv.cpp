@@ -27,6 +27,7 @@
 
 #include <sstream>
 #include <cstring>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -62,11 +63,14 @@ namespace lsvpd
 		bool dbExists;
 
 		mDbPath = mEnvDir + "/" + mDbFileName;
-		dbExists = ( stat( mDbPath.c_str( ), &st ) ) == 0;
-		if( readOnly && !dbExists )
-		{
-			message << "DB requested for reading does not exist." << endl;
-			goto CON_ERR;
+		dbExists = (stat( mDbPath.c_str( ), &st )) == 0;
+		if (readOnly) {
+			if (!dbExists) {
+				message << "DB requested for reading does not "
+					"exist (" << errno << ":" <<
+					strerror(errno) << ")." << endl;
+				goto CON_ERR;
+			}
 		}
 
 		rc = sqlite3_open( mDbPath.c_str( ), &mpVpdDb );
