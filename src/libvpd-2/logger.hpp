@@ -30,6 +30,33 @@
 #define L_DEFAULT_HANDLER syslog // replaces fprintf(3) by syslog(3)
 #define L_DEFAULT_PARAMS LOG_USER // default priority for syslog info
 
+/**
+ * log_msg is a macro used to log message and priority to syslog
+ */
+#define log_msg(_PLEVEL_, _FORMAT_,...)					\
+	L_DEFAULT_HANDLER(_PLEVEL_, "%s:%d: " _FORMAT_, __FILE__,	\
+			  __LINE__, ##__VA_ARGS__)
+
+/**
+ * log_<X> calls log_msg with priority.
+ * can be called as:
+ *   log_info("Some Msg");
+ *   log_info("Some Error Code %d\n", ret);
+ *   or
+ *   log_info("Some Error Code %d context:%p\n", ret, ptr);
+ *
+ * Sample o/p:
+ *   lsvpd[11738]: src/vpddbenv.cpp:134: log log_message
+ */
+#define log_emerg(_FORMAT_, ...)  log_msg(LOG_EMERG, _FORMAT_, ##__VA_ARGS__)
+#define log_alert(_FORMAT_, ...)  log_msg(LOG_ALERT, _FORMAT_, ##__VA_ARGS__)
+#define log_crit(_FORMAT_, ...)   log_msg(LOG_CRIT, _FORMAT_, ##__VA_ARGS__)
+#define log_err(_FORMAT_, ...)    log_msg(LOG_ERR, _FORMAT_, ##__VA_ARGS__)
+#define log_warn(_FORMAT_, ...)   log_msg(LOG_WARNING, _FORMAT_, ##__VA_ARGS__)
+#define log_notice(_FORMAT_, ...) log_msg(LOG_NOTICE, _FORMAT_, ##__VA_ARGS__)
+#define log_info(_FORMAT_, ...)   log_msg(LOG_INFO, _FORMAT_, ##__VA_ARGS__)
+#define log_debug(_FORMAT_, ...)  log_msg(LOG_DEBUG, _FORMAT_, ##__VA_ARGS__)
+
 using namespace std;
 
 namespace lsvpd
