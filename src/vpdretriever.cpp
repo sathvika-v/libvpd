@@ -110,21 +110,24 @@ namespace lsvpd
 
 					nullfd = open("/dev/null", O_WRONLY);
 					if (nullfd == -1) {
-						fprintf(stderr, "%s: Failed to "
-							"open /dev/null\n", __func__);
+						log_notice("Failed to open /dev/null "
+							   "(%d:%s)", errno,
+							   strerror(errno));
 						exit(-2);
 					}
 
 					if (dup2(nullfd, STDOUT_FILENO) == -1) {
-						 fprintf(stderr, "%s: Failed to redirect "
-							 "stderr to /dev/null\n", __func__);
+						log_notice("Failed to redirect stderr "
+							   "to /dev/null (%d:%s)",
+							   errno, strerror(errno));
 						 close(nullfd);
 						 exit(-2);
 					}
 
 					if (dup2(nullfd, STDERR_FILENO) == -1) {
-						 fprintf(stderr, "%s: Failed to redirect "
-							 "stdout to /dev/null\n", __func__);
+						log_notice("Failed to redirect stdout "
+							   "to /dev/null (%d:%s)",
+							   errno, strerror(errno));
 						 close(nullfd);
 						 exit(-2);
 					}

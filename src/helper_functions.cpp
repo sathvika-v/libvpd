@@ -52,25 +52,22 @@ static int process_child(char *argv[], int pipefd[])
 	/* stderr to /dev/null redirection */
 	nullfd = open("/dev/null", O_WRONLY);
 	if (nullfd == -1) {
-		fprintf(stderr, "%s : %d - failed to open "
-				"\'/dev/null\' for redirection : %s\n",
-				__func__, __LINE__, strerror(errno));
+		log_notice("Failed to open \'/dev/null\' for redirection "
+			   "(%d:%s).", errno, strerror(errno));
 		close(pipefd[1]);
 		return -1;
 	}
 
 	/* redirect stdout to write-end of the pipe */
 	if (dup2(pipefd[1], STDOUT_FILENO) == -1) {
-		fprintf(stderr, "%s : %d - failed to redirect "
-				"pipe write fd to stdout : %s\n",
-				__func__, __LINE__, strerror(errno));
+		log_notice("Failed to redirect pipe write fd to stdout "
+			   "(%d:%s).", errno, strerror(errno));
 		goto err_out;
 	}
 
 	if (dup2(nullfd, STDERR_FILENO) == -1) {
-		fprintf(stderr, "%s : %d - failed to redirect "
-				"\'/dev/null\' to stderr : %s\n",
-				__func__, __LINE__, strerror(errno));
+		log_notice("Failed to redirect \'/dev/null\' to stderr "
+			   "(%d:%s).", errno, strerror(errno));
 		goto err_out;
 	}
 
@@ -103,14 +100,13 @@ FILE *spopen(char *argv[], pid_t *ppid)
 		return fp;
 
 	if (access(argv[0], F_OK|X_OK) != 0) {
-		fprintf(stderr, "%s : The command \"%s\" is not executable.\n",
-			__func__, argv[0]);
+		log_notice("The command \"%s\" is not executable.", argv[0]);
 		return fp;
 	}
 
 	if (pipe(pipefd) == -1) {
-		fprintf(stderr, "%s : %d - failed in pipe(), error : %s\n",
-			__func__, __LINE__, strerror(errno));
+		log_notice("Failed in pipe(), error: %d:%s",
+			   errno, strerror(errno));
 		return NULL;
 	}
 
@@ -118,16 +114,15 @@ FILE *spopen(char *argv[], pid_t *ppid)
 	switch (cpid) {
 	case -1:
 		/* Still in parent; Failure in fork() */
-		fprintf(stderr, "%s : %d - fork() failed, error : %s\n",
-			__func__, __LINE__, strerror(errno));
+		log_notice("fork() failed, error : %d:%s",
+			   errno, strerror(errno));
 		close(pipefd[0]);
 		close(pipefd[1]);
 		return NULL;
 	case  0: /* Code executed by child */
 		if (process_child(argv, pipefd) == -1) {
-			fprintf(stderr, "%s : %d - Error occured while "
-					"processing write end of the pipe "
-					"(in child).", __func__, __LINE__);
+			log_notice("Error occured while processing write end "
+				   "of the pipe (in child).");
 			exit(EXIT_FAILURE);
 		}
 		exit(EXIT_SUCCESS);
@@ -139,8 +134,8 @@ FILE *spopen(char *argv[], pid_t *ppid)
 
 		fp = fdopen(pipefd[0], "r");
 		if (fp == NULL) {
-			fprintf(stderr, "%s : %d - fdopen() error : %s\n",
-				__func__, __LINE__, strerror(errno));
+			log_notice("fdopen() error : %d:%s",
+				   errno, strerror(errno));
 			close(pipefd[0]);
 			return NULL;
 		}
@@ -167,8 +162,8 @@ int spclose(FILE *stream, pid_t cpid)
 	 * the underlying fd.
 	 */
 	if (fclose(stream) == EOF) {
-		fprintf(stderr, "%s : %d - Failed in fclose() : %s\n",
-			__func__, __LINE__, strerror(errno));
+		log_notice("Failed in fclose() (%d:%s)",
+			   errno, strerror(errno));
 		return -1;
 	}
 
