@@ -480,6 +480,8 @@ struct component * unpack_component( void *buffer )
 			if( !next )
 				goto unpackerr;
 			item->data = strdup( next );
+			if (item->data == NULL)
+				goto unpackerr;
 			next += strlen( (char*)item->data ) + 1;
 			if( !ret->childrenIDs )
 				ret->childrenIDs = item;

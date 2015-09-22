@@ -363,12 +363,12 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 		int i, ret = 0;
 		char *filePath;
 
-		filePath = strdup(filePath_t.c_str());
-
-		if (len <= 0) {
-			free(filePath);
+		if (len <= 0)
 			return 0;
-		}
+
+		filePath = strdup(filePath_t.c_str());
+		if (filePath == NULL)
+			return 0;
 
 		/* erase filenames */
 		i = len;
