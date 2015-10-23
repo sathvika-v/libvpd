@@ -128,8 +128,6 @@ CON_ERR:
 			message << "SQLITE Error " << rc << ": " <<
 				sqlite3_errmsg( mpVpdDb ) << endl;
 			l.log( message.str( ), LOG_ERR );
-			VpdException ve( message.str( ) );
-			throw ve;
 		}
 	}
 
