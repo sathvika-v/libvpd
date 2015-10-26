@@ -533,10 +533,20 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 
 	bool HelperFunctions::file_exists(const string& file)
 	{
-		FILE *f = fopen(file.c_str(), "r");
-		if (!f) return false;
-		fclose(f);
-		return true;
+		/* If file is available and have read permission */
+		if (access(file.c_str(), R_OK) == 0)
+			return true;
+
+		/* If file is not present - caller will create it, so no need
+		 * to log error. But if file is present but read access call
+		 * gets failed due to other errors condition except(ENOENT),
+		 * then error should be logged.
+		 */
+		if (errno != ENOENT)
+			log_err("Failed to access file %s : %s", file.c_str(),
+				strerror(errno));
+
+		return false;
 	}
 
 /** readMatchFromFile
