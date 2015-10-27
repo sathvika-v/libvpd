@@ -28,13 +28,7 @@
 
 struct list* new_list( )
 {
-	struct list *ret = NULL;
-	ret = malloc( sizeof( struct list ) );
-	if( !ret )
-		return ret;
-
-	memset( ret, 0, sizeof( struct list ) );
-	return ret;
+	return calloc( 1, sizeof( struct list ) );
 }
 
 void free_list( struct list *head )

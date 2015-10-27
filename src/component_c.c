@@ -30,13 +30,11 @@
 
 struct component* new_component( int init )
 {
-	struct component *ret = NULL;
+	struct component *ret;
 
-	ret = malloc( sizeof( struct component ) );
+	ret = calloc( 1, sizeof( struct component ) );
 	if( !ret )
 		return NULL;
-
-	memset( ret, 0, sizeof( struct component ) );
 
 	if( init )
 	{

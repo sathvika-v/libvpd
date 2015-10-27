@@ -28,12 +28,11 @@
 
 struct system * new_system( int init )
 {
-	struct system *ret = NULL;
-	ret = malloc( sizeof( struct system ) );
+	struct system *ret;
+
+	ret = calloc( 1, sizeof( struct system ) );
 	if( !ret )
 		return NULL;
-
-	memset( ret, 0 , sizeof( struct system ) );
 
 	if( init )
 	{

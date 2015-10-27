@@ -29,14 +29,12 @@
 
 struct vpddbenv * new_vpddbenv( const char *dir, const char *file )
 {
-	struct vpddbenv *ret = NULL;
+	struct vpddbenv *ret;
 	int rc = 0;
 	
-	ret = malloc( sizeof( struct vpddbenv ) );
+	ret = calloc( 1, sizeof( struct vpddbenv ) );
 	if( !ret )
 		return ret;
-	
-	memset( ret, 0, sizeof( struct vpddbenv ) );
 	
 	if( dir == NULL || strncmp( dir, "", MAX_NAME_LENGTH ) == 0 )
 		strncpy( ret->envDir, DEFAULT_ENV, MAX_NAME_LENGTH );

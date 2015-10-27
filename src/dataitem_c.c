@@ -29,15 +29,7 @@
 
 struct dataitem* new_dataitem( )
 {
-	struct dataitem *ret = NULL;
-
-	ret = malloc( sizeof( struct dataitem ) );
-	if( !ret )
-		return ret;
-
-	memset( ret, 0, sizeof( struct dataitem ) );
-
-	return ret;
+	return calloc( 1, sizeof( struct dataitem ) );
 }
 
 void free_dataitem( struct dataitem *freeme )
