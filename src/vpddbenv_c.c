@@ -125,11 +125,7 @@ struct system* fetch_system( struct vpddbenv *db )
 	sqlite3_stmt *pstmt = NULL;
 	int rc;
 	const char *out;
-	char sql[ QUERY_BUF_LENGTH ];
-	memset( sql, 0, QUERY_BUF_LENGTH );
-	
-	sprintf( sql, "SELECT %s FROM %s WHERE %s='%s';",
-			DATA, TABLE_NAME, ID, SYS_ID );
+	char sql[] = "SELECT " DATA " FROM " TABLE_NAME " WHERE " ID "='" SYS_ID "';";
 
 	rc = SQLITE3_PREPARE( db->db, sql, strlen( sql ) + 1,
 				&pstmt, &out );
