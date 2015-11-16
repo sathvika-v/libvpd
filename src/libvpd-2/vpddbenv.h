@@ -37,7 +37,6 @@
 #define ID               "comp_id"
 #define DATA             "comp_data"
 #define MAX_NAME_LENGTH  256
-#define QUERY_BUF_LENGTH 4096
 
 #if HAVE_SQLITE3_PREPARE_V2
 #define SQLITE3_PREPARE sqlite3_prepare_v2

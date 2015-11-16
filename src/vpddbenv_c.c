@@ -88,10 +88,9 @@ struct component* fetch_component( struct vpddbenv *db, const char *deviceID )
 	sqlite3_stmt *pstmt = NULL;
 	int rc;
 	const char *out;
-	const char sql[QUERY_BUF_LENGTH] = "SELECT " DATA " FROM " TABLE_NAME " WHERE " ID "=?";
+	char sql[] = {"SELECT " DATA " FROM " TABLE_NAME " WHERE " ID "=?"};
 
-	rc = SQLITE3_PREPARE( db->db, sql, strlen( sql ) + 1,
-				&pstmt, &out );
+	rc = SQLITE3_PREPARE( db->db, sql, sizeof( sql ), &pstmt, &out );
 	if( rc != SQLITE_OK )
 		goto FETCH_COMP_ERR;
 
@@ -127,8 +126,7 @@ struct system* fetch_system( struct vpddbenv *db )
 	const char *out;
 	char sql[] = "SELECT " DATA " FROM " TABLE_NAME " WHERE " ID "='" SYS_ID "';";
 
-	rc = SQLITE3_PREPARE( db->db, sql, strlen( sql ) + 1,
-				&pstmt, &out );
+	rc = SQLITE3_PREPARE( db->db, sql, sizeof( sql ), &pstmt, &out );
 	if( rc != SQLITE_OK )
 		goto FETCH_SYS_ERR;
 	
