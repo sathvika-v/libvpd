@@ -95,7 +95,7 @@ struct component* fetch_component( struct vpddbenv *db, const char *deviceID )
 		goto FETCH_COMP_ERR;
 
 	rc = sqlite3_bind_text(pstmt, 1, deviceID,
-			       strlen(deviceID), SQLITE_STATIC);
+			       deviceID ? strlen(deviceID):0, SQLITE_STATIC);
 	if (rc != SQLITE_OK)
 		goto FETCH_COMP_ERR;
 
