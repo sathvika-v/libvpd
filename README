@@ -34,7 +34,7 @@ Note:
     package. Please check your linux distribution package naming convention and
     make sure you have installed right packages.
   - For users of older RHEL and SLES versions
-    slqite is not available in the default repositories for some of the older
+    sqlite is not available in the default repositories for some of the older
     RHEL (<= 5.x?) and SLES (<= 10.x?) versions. If you want to run the new
     lsvpd/libvpd setup you need build sqlite version 3.0.0 or newer from
     source (available here: http://www.sqlite.org) or find an appropriate
