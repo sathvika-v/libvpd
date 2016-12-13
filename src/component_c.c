@@ -475,7 +475,7 @@ struct component * unpack_component( void *buffer )
 		while( strncmp( next, CHILD_END, strlen( CHILD_END ) ) != 0 )
 		{
 			item = new_list( );
-			if( !next )
+			if( !item )
 				goto unpackerr;
 			item->data = strdup( next );
 			if (item->data == NULL)
