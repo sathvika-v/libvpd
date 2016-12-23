@@ -428,8 +428,8 @@ string HelperFunctions::parseString(const string& line, int str_pos, string& out
 	 */
 	bool HelperFunctions::matches(const string& s1, const string& s2)
 	{
-		unsigned int beg = 0, end;
-		unsigned int z;
+		size_t beg = 0, end;
+		size_t z;
 //		coutd << " s1 = " << s1 << ", s2 = " << s2 << endl;
 
 		//strings have matched to end - base case
