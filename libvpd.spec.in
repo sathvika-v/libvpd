@@ -53,7 +53,6 @@ Contains header files for building with libvpd.
 %{_libdir}/libvpd_cxx-@GENERIC_RELEASE@.so.*
 %{_libdir}/libvpd-@GENERIC_RELEASE@.so.*
 %{_sysconfdir}/udev/rules.d/90-vpdupdate.rules
-%{_var}/lib/lsvpd/run.vpdupdate
 
 %files devel
 %defattr(-,root,root,-)

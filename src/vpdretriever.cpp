@@ -44,7 +44,7 @@ namespace lsvpd
 {
 	const string VpdRetriever::DEFAULT_DIR  ( "/var/lib/lsvpd/" );
 	const string VpdRetriever::DEFAULT_FILE ( "vpd.db" );
-	const string VpdRetriever::UDEV_NOTIFY_FILE ( "run.vpdupdate" );
+	const string VpdRetriever::UDEV_NOTIFY_FILE ( "/run/run.vpdupdate" );
 
 	VpdRetriever::VpdRetriever( string envDir,
 		string dbFileName ) throw( VpdException& )
@@ -63,7 +63,7 @@ namespace lsvpd
 	{
 		struct stat vpd_stat,udev_stat;
 		const string vpddb = VpdRetriever::DEFAULT_DIR + VpdRetriever::DEFAULT_FILE;
-		const string udev_file = VpdRetriever::DEFAULT_DIR + VpdRetriever::UDEV_NOTIFY_FILE;
+		const string udev_file = VpdRetriever::UDEV_NOTIFY_FILE;
 		Logger logger;
 		int flag = 1;
 

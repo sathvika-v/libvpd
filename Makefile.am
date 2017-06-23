@@ -67,7 +67,5 @@ libtool: $(LIBTOOL_DEPS)
 install-exec-hook:
 	mkdir -p $(DESTDIR)/${sysconfdir}/udev/rules.d/
 	mkdir -p $(DESTDIR)/${localstatedir}/lib/lsvpd/
-	install -D --mode=644 run.vpdupdate \
-		${DESTDIR}/${localstatedir}/lib/lsvpd/run.vpdupdate
 	install -D --mode=644 90-vpdupdate.rules \
                 ${DESTDIR}/${sysconfdir}/udev/rules.d/90-vpdupdate.rules
