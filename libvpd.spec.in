@@ -65,6 +65,9 @@ Contains header files for building with libvpd.
 
 %changelog
 
+* Tue Jun 12 2018 Vasant Hegde <hegdevasant@linux.vnet.ibm.com> 2.2.6
+- Changes run.vpdupdate creation path from /var/lib/lsvpd to /run
+
 * Tue Nov 03 2015 Vasant Hegde <hegdevasant@linux.vnet.ibm.com> 2.2.5
 - Fixed security issues like buffer overflow, memory allocation validation
 - Replaced popen with secured version
