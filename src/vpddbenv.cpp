@@ -261,6 +261,10 @@ STORE_COMP_ERR:
 		message << "SQLITE Error " << rc << ": " <<
 			sqlite3_errmsg( mpVpdDb ) << endl;
 		l.log( message.str( ), LOG_ERR );
+
+		if ( rc == SQLITE_BUSY )
+			l.log( "Connection is busy with other process." );
+
 		sqlite3_finalize( pstmt );
 		return false;
 	}
@@ -302,6 +306,10 @@ STORE_SYS_ERR:
 		message << "SQLITE Error " << rc << ": " <<
 			sqlite3_errmsg( mpVpdDb ) << endl;
 		l.log( message.str( ), LOG_ERR );
+
+		if ( rc == SQLITE_BUSY )
+			l.log( "Connection is busy with other process." );
+
 		sqlite3_finalize( pstmt );
 		return false;
 	}
