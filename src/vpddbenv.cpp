@@ -263,7 +263,7 @@ STORE_COMP_ERR:
 		l.log( message.str( ), LOG_ERR );
 
 		if ( rc == SQLITE_BUSY )
-			l.log( "Connection is busy with other process." );
+			l.log( "Another instance of vpdupdate running." );
 
 		sqlite3_finalize( pstmt );
 		return false;
@@ -308,7 +308,7 @@ STORE_SYS_ERR:
 		l.log( message.str( ), LOG_ERR );
 
 		if ( rc == SQLITE_BUSY )
-			l.log( "Connection is busy with other process." );
+			l.log( "Another instance of vpdupdate running." );
 
 		sqlite3_finalize( pstmt );
 		return false;
