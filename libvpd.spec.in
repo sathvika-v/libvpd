@@ -11,7 +11,7 @@ License:	LGPLv2+
 Vendor:         IBM Corp.
 ExclusiveArch:  ppc64 ppc ppc64le
 URL:            https://github.com/power-ras/libvpd
-Source:         https://github.com/power-ras/libvpd.git
+Source:         https://github.com/power-ras/%{name}/archive/v%{version}.tar.gz
 
 BuildRequires:	sqlite-devel zlib-devel libstdc++-devel
 BuildRequires:	libtool automake
