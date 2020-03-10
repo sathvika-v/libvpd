@@ -1,0 +1,6 @@
+FROM fedora:rawhide
+
+RUN dnf -y install gcc-g++ make sqlite-devel zlib-devel libstdc++-devel
+RUN dnf -y install automake rpm-build git libvpd libtool
+COPY . /build/
+WORKDIR /build
