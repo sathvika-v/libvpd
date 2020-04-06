@@ -4,7 +4,7 @@
 AC_PREREQ([2.69])
 
 #base
-AC_INIT([libvpd],[2.2.6],[hegdevasant@in.ibm.com])
+AC_INIT([libvpd],[2.2.7],[hegdevasant@linux.vnet.ibm.com, sbhat@linux.ibm.com])
 AC_CONFIG_HEADER([config/config.h])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([m4])
@@ -18,7 +18,7 @@ GENERIC_LIBRARY_NAME=libvpd
 #Release version
 GENERIC_MAJOR_VERSION=2
 GENERIC_MINOR_VERSION=2
-GENERIC_MICRO_VERSION=6
+GENERIC_MICRO_VERSION=7
 
 GENERIC_API_VERSION=$GENERIC_MAJOR_VERSION
 AC_SUBST(GENERIC_API_VERSION)
