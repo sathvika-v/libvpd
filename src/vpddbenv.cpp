@@ -61,6 +61,9 @@ namespace lsvpd
 
 		struct stat st;
 		bool dbExists;
+		sqlite3_stmt *pstmt;
+		const char *out;
+		string async = "PRAGMA synchronous = OFF";
 
 		mDbPath = mEnvDir + "/" + mDbFileName;
 		dbExists = (stat( mDbPath.c_str( ), &st )) == 0;
@@ -83,8 +86,6 @@ namespace lsvpd
 
 		if( !dbExists )
 		{
-			sqlite3_stmt *pstmt;
-			const char *out;
 			ostringstream sql;
 			sql << "CREATE TABLE " << TABLE_NAME << " ( " << ID <<
 				" TEXT NOT NULL UNIQUE, " << DATA << " BLOB NOT NULL );";
@@ -107,8 +108,13 @@ namespace lsvpd
 			}
 			sqlite3_finalize( pstmt );
 		}
-		return;
 
+		SQLITE3_PREPARE( mpVpdDb, async.c_str( ), async.length( ) + 1,
+				&pstmt, &out );
+		sqlite3_step( pstmt );
+		sqlite3_finalize( pstmt );
+
+		return;
 CON_ERR:
 		l.log( message.str( ), LOG_ERR );
 		VpdException ve( message.str( ) );
