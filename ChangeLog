@@ -1,3 +1,6 @@
+2.2.8
+- VpdDbEnv: Make the sqlite operations asynchronous
+
 2.2.7
 - Add Travis build support
 - Reduce system load from vpdupdate udev rule

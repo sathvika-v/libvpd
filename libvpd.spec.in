@@ -64,9 +64,8 @@ Contains header files for building with libvpd.
 %{_libdir}/pkgconfig/libvpd_cxx-2.pc
 
 %changelog
-* Mon Apr 06 2020 Vasant Hegde <hegdevasant@linux.vnet.ibm.com> 2.2.7
-- Add Travis build support
-- Reduce system load from vpdupdate udev rule
+* Fri Nov 06 2020 Vasant Hegde <hegdevasant@linux.vnet.ibm.com> 2.2.8
+- VpdDbEnv: Make the sqlite operations asynchronous
 
 * Tue Jun 12 2018 Vasant Hegde <hegdevasant@linux.vnet.ibm.com> 2.2.6
 - Changes run.vpdupdate creation path from /var/lib/lsvpd to /run
