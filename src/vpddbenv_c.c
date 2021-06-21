@@ -50,14 +50,10 @@ struct vpddbenv * new_vpddbenv( const char *dir, const char *file )
 		ret->dbFileName[MAX_NAME_LENGTH] = '\0';
 	}
 
-	strncpy( ret->fullPath, ret->envDir , FULL_PATH_SIZE - 1);
-
-	if (strlen(ret->fullPath) + 1 < FULL_PATH_SIZE)
-		strncat( ret->fullPath, "/" , 1 );
-	if (strlen(ret->fullPath) + strlen(ret->dbFileName) < FULL_PATH_SIZE)
-		strncat( ret->fullPath, ret->dbFileName, strlen (ret->dbFileName) );
-
-	ret->fullPath[FULL_PATH_SIZE - 1] = '\0';
+	if ( ( strlen( ret->envDir ) + strlen( ret->dbFileName ) + 1 ) <
+			FULL_PATH_SIZE )
+		snprintf( ret->fullPath, FULL_PATH_SIZE,
+				"%s/%s", ret->envDir, ret->dbFileName );
 	
 	rc = sqlite3_open( ret->fullPath, &(ret->db) );
 	if( rc != SQLITE_OK )
