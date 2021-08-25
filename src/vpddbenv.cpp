@@ -40,6 +40,20 @@ namespace lsvpd
 	const string VpdDbEnv::ID         ( "comp_id" );
 	const string VpdDbEnv::DATA       ( "comp_data" );
 
+	static int SQLiteBusyHandler( void * user_data , int number_of_calls )
+	{
+		sqlite3 *mpVpdDb = (sqlite3 *)user_data;
+		ostringstream message;
+		Logger l;
+
+		message << "SQLite database busy, waiting... " <<
+			sqlite3_errmsg( mpVpdDb ) << endl;
+		l.log( message.str( ), LOG_WARNING );
+		sleep( number_of_calls );
+
+		return 1; /* keep trying */
+	}
+
 	VpdDbEnv::VpdDbEnv( const string& envDir, const string& dbFileName,
 				bool readOnly = false ) :
 				mDbFileName( dbFileName ),
@@ -67,7 +81,26 @@ namespace lsvpd
 			}
 		}
 
-		rc = sqlite3_open( mDbPath.c_str( ), &mpVpdDb );
+		for( unsigned int seconds = 1;; seconds++ ) {
+			rc = sqlite3_open( mDbPath.c_str( ), &mpVpdDb );
+			if (rc == SQLITE_BUSY) {
+				ostringstream message;
+
+				message << "SQLite database busy, waiting... " <<
+					sqlite3_errmsg( mpVpdDb ) << endl;
+				l.log( message.str( ), LOG_WARNING );
+				sleep( seconds );
+			} else {
+				break;
+			}
+		}
+		if( rc != SQLITE_OK )
+		{
+			message << "SQLite Error " << rc << ": " <<
+				sqlite3_errmsg( mpVpdDb ) << endl;
+			goto CON_ERR;
+		}
+		rc = sqlite3_busy_handler( mpVpdDb, SQLiteBusyHandler, (void *)mpVpdDb );
 		if( rc != SQLITE_OK )
 		{
 			message << "SQLITE Error " << rc << ": " <<
