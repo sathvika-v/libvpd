@@ -27,6 +27,7 @@
 
 #include <sstream>
 #include <cstring>
+#include <fcntl.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -36,9 +37,99 @@ using namespace::std;
 
 namespace lsvpd
 {
+	const string VpdDbEnv::UpdateLock::UPDATE_LOCK_SUFFIX( "-updatelock" );
 	const string VpdDbEnv::TABLE_NAME ( "components" );
 	const string VpdDbEnv::ID         ( "comp_id" );
 	const string VpdDbEnv::DATA       ( "comp_data" );
+
+	pid_t VpdDbEnv::UpdateLock::lockFileUpdate( bool blocking )
+	{
+		const string fname( mDbPath + UPDATE_LOCK_SUFFIX );
+		int rc;
+		struct flock fl = {
+			.l_type = F_WRLCK,
+			.l_whence = SEEK_SET,
+			.l_start = 0,
+			.l_len = 1,
+			.l_pid = -1,
+		};
+
+		if ( lockfd >= 0 )
+			return -EBUSY;
+
+		lockfd = open( fname.c_str( ), O_RDWR|O_CREAT, 0644 );
+		if ( lockfd < 0 )
+			return -errno;
+
+		rc = fcntl( lockfd, blocking ? F_SETLKW : F_SETLK, &fl );
+		if ( rc ) {
+			if ( ! blocking && ( errno == EACCES || errno == EAGAIN ) ) {
+				if ( ! fcntl ( lockfd, F_GETLK, &fl ) )
+					rc = fl.l_pid;
+			} else {
+				rc = -errno;
+			}
+			lockfd = -1;
+		}
+		return rc;
+	}
+
+	void VpdDbEnv::UpdateLock::unlockFileUpdate( void )
+	{
+		if ( lockfd > 0 ) {
+			close( lockfd );
+			lockfd = -1;
+		}
+	}
+
+	VpdDbEnv::UpdateLock::~UpdateLock()
+	{
+		unlockFileUpdate();
+	}
+
+	VpdDbEnv::UpdateLock::UpdateLock( const string& envDir, const string& dbFileName,
+			bool readOnly = false ):
+		mReadOnly( readOnly ),
+		mDbFileName( dbFileName ),
+		mEnvDir( envDir ),
+		lockfd( -1 )
+	{
+		struct stat st;
+		bool dbExists;
+		pid_t rc;
+		ostringstream message;
+		Logger l;
+
+		mDbPath = mEnvDir + "/" + mDbFileName;
+		dbExists = (stat( mDbPath.c_str( ), &st )) == 0;
+		if (readOnly) {
+			if (!dbExists) {
+				message << mDbPath << ": DB requested for reading does not "
+					"exist (" << errno << ":" <<
+					strerror(errno) << ")." << endl;
+				goto CON_ERR;
+			}
+		}
+		rc = lockFileUpdate( false );
+		while ( rc > 0 ) {
+			ostringstream message;
+
+			message << mDbPath << ": locked by another process (" << rc << "), waiting ..." << endl;
+			rc = lockFileUpdate( true );
+			l.log( message.str( ), LOG_INFO );
+		}
+		if ( rc < 0 ) {
+			ostringstream message;
+
+			message << mDbPath << ": cannot lock (" << strerror( -rc ) << ")." << endl;
+			l.log( message.str( ), LOG_ERR );
+		}
+		return;
+CON_ERR:
+		l.log( message.str( ), LOG_ERR );
+		VpdException ve( message.str( ) );
+		throw ve;
+	}
 
 	static int SQLiteBusyHandler( void * user_data , int number_of_calls )
 	{
@@ -56,30 +147,37 @@ namespace lsvpd
 
 	VpdDbEnv::VpdDbEnv( const string& envDir, const string& dbFileName,
 				bool readOnly = false ) :
-				mDbFileName( dbFileName ),
-				mEnvDir( envDir ),
-				mpVpdDb( NULL )
+		mUpdateLock( *new UpdateLock(envDir, dbFileName, readOnly )),
+		mDbFileName( dbFileName ),
+		mEnvDir( envDir ),
+		mpVpdDb( NULL )
+	{
+		initFromLock();
+	}
+
+	VpdDbEnv::VpdDbEnv( const VpdDbEnv::UpdateLock& lock ):
+		mUpdateLock( lock ),
+		mDbFileName( mUpdateLock.mDbFileName ),
+		mEnvDir( mUpdateLock.mEnvDir ),
+		mpVpdDb( NULL )
+	{
+		initFromLock();
+	}
+
+	void VpdDbEnv::initFromLock( void )
 	{
 		int rc;
 		Logger l;
 		ostringstream message;
-
 		struct stat st;
 		bool dbExists;
+		bool readOnly = mUpdateLock.mReadOnly;
 		sqlite3_stmt *pstmt;
 		const char *out;
 		string async = "PRAGMA synchronous = OFF";
 
-		mDbPath = mEnvDir + "/" + mDbFileName;
+		mDbPath = mUpdateLock.mDbPath;
 		dbExists = (stat( mDbPath.c_str( ), &st )) == 0;
-		if (readOnly) {
-			if (!dbExists) {
-				message << "DB requested for reading does not "
-					"exist (" << errno << ":" <<
-					strerror(errno) << ")." << endl;
-				goto CON_ERR;
-			}
-		}
 
 		for( unsigned int seconds = 1;; seconds++ ) {
 			rc = sqlite3_open_v2( mDbPath.c_str( ), &mpVpdDb,
@@ -161,6 +259,7 @@ CON_ERR:
 				sqlite3_errmsg( mpVpdDb ) << endl;
 			l.log( message.str( ), LOG_ERR );
 		}
+		delete &mUpdateLock;
 	}
 
 	Component* VpdDbEnv::fetch( const string& deviceID )
