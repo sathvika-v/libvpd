@@ -40,15 +40,6 @@ namespace lsvpd
 	const string VpdDbEnv::ID         ( "comp_id" );
 	const string VpdDbEnv::DATA       ( "comp_data" );
 
-	/*
-	 * The copy constructor is marked private but these things need to be
-	 * filled out to compile correctly.
-	 */
-	 VpdDbEnv::VpdDbEnv( const VpdDbEnv& copyMe ):
-		mDbFileName( copyMe.mDbFileName ), mEnvDir( copyMe.mEnvDir ),
-		mpVpdDb( NULL )
-		{ }
-
 	VpdDbEnv::VpdDbEnv( const string& envDir, const string& dbFileName,
 				bool readOnly = false ) :
 				mDbFileName( dbFileName ),

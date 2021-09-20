@@ -51,8 +51,8 @@ namespace lsvpd
 	class VpdDbEnv
 	{
 		private:
-			VpdDbEnv& operator=( const VpdDbEnv& rhs ) { return (*this); }
-			VpdDbEnv( const VpdDbEnv& copyMe );
+			VpdDbEnv& operator=( const VpdDbEnv& rhs ) = delete;
+			VpdDbEnv( const VpdDbEnv& copyMe ) = delete;
 
 			string mDbFileName;
 			string mEnvDir;
