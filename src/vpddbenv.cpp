@@ -82,7 +82,9 @@ namespace lsvpd
 		}
 
 		for( unsigned int seconds = 1;; seconds++ ) {
-			rc = sqlite3_open( mDbPath.c_str( ), &mpVpdDb );
+			rc = sqlite3_open_v2( mDbPath.c_str( ), &mpVpdDb,
+					readOnly ? SQLITE_OPEN_READONLY : SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE,
+					NULL );
 			if (rc == SQLITE_BUSY) {
 				ostringstream message;
 
